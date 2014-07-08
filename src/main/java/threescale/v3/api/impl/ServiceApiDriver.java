@@ -1,5 +1,10 @@
 package threescale.v3.api.impl;
 
+import static threescale.v3.api.ServiceApiConstants.HITS_PARAMETER;
+import static threescale.v3.api.ServiceApiConstants.PROVIDER_KEY_PARAMETER;
+import static threescale.v3.api.ServiceApiConstants.SERVICE_ID_PARAMETER;
+import static threescale.v3.api.ServiceApiConstants.TRANSACTIONS_ID_PARAMETER;
+import static threescale.v3.api.ServiceApiConstants.USAGE_PARAMETER;
 import threescale.v3.api.AuthorizeResponse;
 import threescale.v3.api.HttpResponse;
 import threescale.v3.api.ParameterMap;
@@ -46,16 +51,16 @@ public class ServiceApiDriver implements ServiceApi {
 
 	@Override
 	public AuthorizeResponse authrep(ParameterMap metrics) throws ServerError {
-		metrics.add("provider_key", provider_key);
+		metrics.add(PROVIDER_KEY_PARAMETER, provider_key);
 
-		ParameterMap usage = metrics.getMapValue("usage");
+		ParameterMap usage = metrics.getMapValue(USAGE_PARAMETER);
 
-		if (usage == null || usage.getStringValue("hits") == null) {
+		if (usage == null || usage.getStringValue(HITS_PARAMETER) == null) {
 			if (usage == null) {
 				usage = new ParameterMap();
-				metrics.add("usage", usage);
+				metrics.add(USAGE_PARAMETER, usage);
 			}
-			usage.add("hits", "1");
+			usage.add(HITS_PARAMETER, "1");
 		}
 		String urlParams = encodeAsString(metrics);
 
@@ -76,12 +81,12 @@ public class ServiceApiDriver implements ServiceApi {
 		}
 
 		ParameterMap params = new ParameterMap();
-		params.add("provider_key", provider_key);
+		params.add(PROVIDER_KEY_PARAMETER, provider_key);
 		if (service_id != null) {
-			params.add("service_id", service_id);
+			params.add(SERVICE_ID_PARAMETER, service_id);
 		}
 		ParameterMap trans = new ParameterMap();
-		params.add("transactions", transactions);
+		params.add(TRANSACTIONS_ID_PARAMETER, transactions);
 
 		int index = 0;
 		for (ParameterMap transaction : transactions) {
@@ -98,7 +103,7 @@ public class ServiceApiDriver implements ServiceApi {
 
 	@Override
 	public AuthorizeResponse authorize(ParameterMap parameters) throws ServerError {
-		parameters.add("provider_key", provider_key);
+		parameters.add(PROVIDER_KEY_PARAMETER, provider_key);
 		String urlParams = encodeAsString(parameters);
 
 		final String s = getFullHostUrl() + "/transactions/authorize.xml?" + urlParams;
@@ -116,7 +121,7 @@ public class ServiceApiDriver implements ServiceApi {
 
 	@Override
 	public AuthorizeResponse oauth_authorize(ParameterMap params) throws ServerError {
-		params.add("provider_key", provider_key);
+		params.add(PROVIDER_KEY_PARAMETER, provider_key);
 
 		String urlParams = encodeAsString(params);
 
