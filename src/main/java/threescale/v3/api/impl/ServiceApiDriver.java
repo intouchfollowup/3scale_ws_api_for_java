@@ -107,9 +107,7 @@ public class ServiceApiDriver implements ServiceApi {
 			index++;
 		}
 
-		HttpResponse response = server.post(getFullHostUrl(TRANSACTIONS_URL), encodeAsString(params));
-		validateResponse(response);
-		return new ReportResponse(response);
+		return post(TRANSACTIONS_URL, params);
 	}
 
 	@Override
@@ -122,6 +120,12 @@ public class ServiceApiDriver implements ServiceApi {
 	public AuthorizeResponse oauth_authorize(ParameterMap params) throws ServerError {
 		params.add(PROVIDER_KEY_PARAMETER, provider_key);
 		return get(TRANSACTIONS_OAUTH_AUTHORIZE_URL, params);
+	}
+
+	private ReportResponse post(String url, ParameterMap parameters) throws ServerError {
+		HttpResponse response = server.post(getFullHostUrl(url), encodeAsString(parameters));
+		validateResponse(response);
+		return new ReportResponse(response);
 	}
 
 	private AuthorizeResponse get(String url, ParameterMap parameters) throws ServerError {
