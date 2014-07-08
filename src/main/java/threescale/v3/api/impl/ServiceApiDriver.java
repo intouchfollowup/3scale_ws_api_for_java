@@ -85,9 +85,7 @@ public class ServiceApiDriver implements ServiceApi {
 		final String s = getFullHostUrl(TRANSACTIONS_AUTHREP_URL, metrics);
 
 		HttpResponse response = server.get(s);
-		if (response.getStatus() == 500) {
-			throw new ServerError(response.getBody());
-		}
+		validateResponse(response);
 		return convertXmlToAuthorizeResponse(response);
 	}
 
@@ -114,9 +112,7 @@ public class ServiceApiDriver implements ServiceApi {
 		}
 
 		HttpResponse response = server.post(getFullHostUrl(TRANSACTIONS_URL), encodeAsString(params));
-		if (response.getStatus() == 500) {
-			throw new ServerError(response.getBody());
-		}
+		validateResponse(response);
 		return new ReportResponse(response);
 	}
 
@@ -126,9 +122,7 @@ public class ServiceApiDriver implements ServiceApi {
 
 		final String s = getFullHostUrl(TRANSACTIONS_AUTHORIZE_URL, parameters);
 		HttpResponse response = server.get(s);
-		if (response.getStatus() == 500) {
-			throw new ServerError(response.getBody());
-		}
+		validateResponse(response);
 		return convertXmlToAuthorizeResponse(response);
 	}
 
@@ -137,9 +131,7 @@ public class ServiceApiDriver implements ServiceApi {
 		params.add(PROVIDER_KEY_PARAMETER, provider_key);
 		final String s = getFullHostUrl(TRANSACTIONS_OAUTH_AUTHORIZE_URL, params);
 		HttpResponse response = server.get(s);
-		if (response.getStatus() == 500) {
-			throw new ServerError(response.getBody());
-		}
+		validateResponse(response);
 		return convertXmlToAuthorizeResponse(response);
 	}
 
@@ -158,6 +150,12 @@ public class ServiceApiDriver implements ServiceApi {
 	public String encodeAsString(ParameterMap params) {
 		ParameterEncoder encoder = new ParameterEncoder();
 		return encoder.encode(params);
+	}
+
+	private void validateResponse(HttpResponse response) throws ServerError {
+		if (response.getStatus() == 500) {
+			throw new ServerError(response.getBody());
+		}
 	}
 
 	private AuthorizeResponse convertXmlToAuthorizeResponse(HttpResponse res) throws ServerError {
