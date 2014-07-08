@@ -10,6 +10,8 @@ import static threescale.v3.api.ServiceApiConstants.TRANSACTIONS_ID_PARAMETER;
 import static threescale.v3.api.ServiceApiConstants.TRANSACTIONS_OAUTH_AUTHORIZE_URL;
 import static threescale.v3.api.ServiceApiConstants.TRANSACTIONS_URL;
 import static threescale.v3.api.ServiceApiConstants.USAGE_PARAMETER;
+import static threescale.v3.utils.ObjectUtils.isNotNull;
+import static threescale.v3.utils.ObjectUtils.isNull;
 import threescale.v3.api.AuthorizeResponse;
 import threescale.v3.api.HttpResponse;
 import threescale.v3.api.ParameterMap;
@@ -60,11 +62,12 @@ public class ServiceApiDriver implements ServiceApi {
 
 		ParameterMap usage = metrics.getMapValue(USAGE_PARAMETER);
 
-		if (usage == null || usage.getStringValue(HITS_PARAMETER) == null) {
-			if (usage == null) {
-				usage = new ParameterMap();
-				metrics.add(USAGE_PARAMETER, usage);
-			}
+		if (isNull(usage)) {
+			usage = new ParameterMap();
+			metrics.add(USAGE_PARAMETER, usage);
+		}
+
+		if (isNull(usage.getStringValue(HITS_PARAMETER))) {
 			usage.add(HITS_PARAMETER, "1");
 		}
 
@@ -85,9 +88,11 @@ public class ServiceApiDriver implements ServiceApi {
 
 		ParameterMap params = new ParameterMap();
 		params.add(PROVIDER_KEY_PARAMETER, provider_key);
-		if (service_id != null) {
+
+		if (isNotNull(service_id)) {
 			params.add(SERVICE_ID_PARAMETER, service_id);
 		}
+
 		ParameterMap trans = new ParameterMap();
 		params.add(TRANSACTIONS_ID_PARAMETER, transactions);
 
