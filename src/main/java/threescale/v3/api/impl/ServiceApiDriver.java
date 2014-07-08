@@ -67,9 +67,8 @@ public class ServiceApiDriver implements ServiceApi {
 			}
 			usage.add(HITS_PARAMETER, "1");
 		}
-		String urlParams = encodeAsString(metrics);
 
-		final String s = getFullHostUrl() + TRANSACTIONS_AUTHREP_URL +"?" + urlParams;
+		final String s = getFullHostUrl(TRANSACTIONS_AUTHREP_URL, metrics);
 
 		HttpResponse response = server.get(s);
 		if (response.getStatus() == 500) {
@@ -98,7 +97,7 @@ public class ServiceApiDriver implements ServiceApi {
 			index++;
 		}
 
-		HttpResponse response = server.post(getFullHostUrl() + TRANSACTIONS_URL, encodeAsString(params));
+		HttpResponse response = server.post(getFullHostUrl(TRANSACTIONS_URL), encodeAsString(params));
 		if (response.getStatus() == 500) {
 			throw new ServerError(response.getBody());
 		}
@@ -108,9 +107,8 @@ public class ServiceApiDriver implements ServiceApi {
 	@Override
 	public AuthorizeResponse authorize(ParameterMap parameters) throws ServerError {
 		parameters.add(PROVIDER_KEY_PARAMETER, provider_key);
-		String urlParams = encodeAsString(parameters);
 
-		final String s = getFullHostUrl() + TRANSACTIONS_AUTHORIZE_URL +"?" + urlParams;
+		final String s = getFullHostUrl(TRANSACTIONS_AUTHORIZE_URL, parameters);
 		HttpResponse response = server.get(s);
 		if (response.getStatus() == 500) {
 			throw new ServerError(response.getBody());
@@ -126,10 +124,7 @@ public class ServiceApiDriver implements ServiceApi {
 	@Override
 	public AuthorizeResponse oauth_authorize(ParameterMap params) throws ServerError {
 		params.add(PROVIDER_KEY_PARAMETER, provider_key);
-
-		String urlParams = encodeAsString(params);
-
-		final String s = getFullHostUrl() + TRANSACTIONS_OAUTH_AUTHORIZE_URL + "?" + urlParams;
+		final String s = getFullHostUrl(TRANSACTIONS_OAUTH_AUTHORIZE_URL, params);
 		HttpResponse response = server.get(s);
 		if (response.getStatus() == 500) {
 			throw new ServerError(response.getBody());
@@ -137,8 +132,15 @@ public class ServiceApiDriver implements ServiceApi {
 		return convertXmlToAuthorizeResponse(response);
 	}
 
-	private String getFullHostUrl() {
+	private String getFullHostUrl(String url, ParameterMap parameters) {
+		return getFullHostUrl() + url + "?" + encodeAsString(parameters);
+	}
 
+	private String getFullHostUrl(String url) {
+		return getFullHostUrl() + url;
+	}
+
+	private String getFullHostUrl() {
 		return useHttps ? "https://" + getHost() : "http://" + getHost();
 	}
 
