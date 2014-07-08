@@ -7,7 +7,10 @@ package threescale.v3.api;
  */
 public class ServiceApiConstants {
 
+	public static final String HTTP_PROTOCAL = "http://";
+	public static final String HTTPS_PROTOCAL = "https://";
 	public static final String DEFAULT_HOST = "su1.3scale.net";
+	public static final String DEFAULT_HOST_URL= HTTP_PROTOCAL + DEFAULT_HOST;
 
 	// request parameters
 	public static final String PROVIDER_KEY_PARAMETER = "provider_key";

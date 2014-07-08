@@ -1,7 +1,10 @@
 package threescale.v3.api.impl;
 
 import static threescale.v3.api.ServiceApiConstants.DEFAULT_HOST;
+import static threescale.v3.api.ServiceApiConstants.DEFAULT_HOST_URL;
 import static threescale.v3.api.ServiceApiConstants.HITS_PARAMETER;
+import static threescale.v3.api.ServiceApiConstants.HTTPS_PROTOCAL;
+import static threescale.v3.api.ServiceApiConstants.HTTP_PROTOCAL;
 import static threescale.v3.api.ServiceApiConstants.PROVIDER_KEY_PARAMETER;
 import static threescale.v3.api.ServiceApiConstants.SERVICE_ID_PARAMETER;
 import static threescale.v3.api.ServiceApiConstants.TRANSACTIONS_AUTHORIZE_URL;
@@ -28,9 +31,10 @@ import threescale.v3.api.ServiceApi;
 public class ServiceApiDriver implements ServiceApi {
 
 	private String provider_key;
-	private boolean useHttps = false;
 	private ServerAccessor server;
 	private String host = DEFAULT_HOST;
+	private String hostURL = DEFAULT_HOST_URL;
+	private boolean useHttps;
 
 	public ServiceApiDriver() {
 		this.server = new ServerAccessorDriver();
@@ -44,16 +48,27 @@ public class ServiceApiDriver implements ServiceApi {
 	public ServiceApiDriver(String provider_key, boolean useHttps) {
 		this(provider_key);
 		this.useHttps = useHttps;
+
+		initHostURL();
 	}
 
 	public ServiceApiDriver(String provider_key, String host) {
 		this(provider_key);
 		this.host = host;
+
+		initHostURL();
 	}
 
 	public ServiceApiDriver(String provider_key, String host, boolean useHttps) {
 		this(provider_key, host);
+		this.host = host;
 		this.useHttps = useHttps;
+
+		initHostURL();
+	}
+
+	private void initHostURL() {
+		this.hostURL = useHttps ? (HTTPS_PROTOCAL + host) : (HTTP_PROTOCAL + host);
 	}
 
 	@Override
@@ -122,11 +137,6 @@ public class ServiceApiDriver implements ServiceApi {
 	}
 
 	@Override
-	public String getHost() {
-		return host;
-	}
-
-	@Override
 	public AuthorizeResponse oauth_authorize(ParameterMap params) throws ServerError {
 		params.add(PROVIDER_KEY_PARAMETER, provider_key);
 		final String s = getFullHostUrl(TRANSACTIONS_OAUTH_AUTHORIZE_URL, params);
@@ -138,15 +148,11 @@ public class ServiceApiDriver implements ServiceApi {
 	}
 
 	private String getFullHostUrl(String url, ParameterMap parameters) {
-		return getFullHostUrl() + url + "?" + encodeAsString(parameters);
+		return hostURL + url + "?" + encodeAsString(parameters);
 	}
 
 	private String getFullHostUrl(String url) {
-		return getFullHostUrl() + url;
-	}
-
-	private String getFullHostUrl() {
-		return useHttps ? "https://" + getHost() : "http://" + getHost();
+		return hostURL + url;
 	}
 
 	public String encodeAsString(ParameterMap params) {
@@ -156,6 +162,11 @@ public class ServiceApiDriver implements ServiceApi {
 
 	private AuthorizeResponse convertXmlToAuthorizeResponse(HttpResponse res) throws ServerError {
 		return new AuthorizeResponse(res.getStatus(), res.getBody());
+	}
+
+	@Override
+	public String getHost() {
+		return host;
 	}
 
 	public ServiceApiDriver setServer(ServerAccessor server) {
