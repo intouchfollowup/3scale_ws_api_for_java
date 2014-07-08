@@ -82,11 +82,7 @@ public class ServiceApiDriver implements ServiceApi {
 			usage.add(HITS_PARAMETER, "1");
 		}
 
-		final String s = getFullHostUrl(TRANSACTIONS_AUTHREP_URL, metrics);
-
-		HttpResponse response = server.get(s);
-		validateResponse(response);
-		return convertXmlToAuthorizeResponse(response);
+		return get(TRANSACTIONS_AUTHREP_URL, metrics);
 	}
 
 	@Override
@@ -119,18 +115,21 @@ public class ServiceApiDriver implements ServiceApi {
 	@Override
 	public AuthorizeResponse authorize(ParameterMap parameters) throws ServerError {
 		parameters.add(PROVIDER_KEY_PARAMETER, provider_key);
-
-		final String s = getFullHostUrl(TRANSACTIONS_AUTHORIZE_URL, parameters);
-		HttpResponse response = server.get(s);
-		validateResponse(response);
-		return convertXmlToAuthorizeResponse(response);
+		return get(TRANSACTIONS_AUTHORIZE_URL, parameters);
 	}
 
 	@Override
 	public AuthorizeResponse oauth_authorize(ParameterMap params) throws ServerError {
 		params.add(PROVIDER_KEY_PARAMETER, provider_key);
-		final String s = getFullHostUrl(TRANSACTIONS_OAUTH_AUTHORIZE_URL, params);
-		HttpResponse response = server.get(s);
+		return get(TRANSACTIONS_OAUTH_AUTHORIZE_URL, params);
+	}
+
+	private AuthorizeResponse get(String url, ParameterMap parameters) throws ServerError {
+		return get(getFullHostUrl(url, parameters));
+	}
+
+	private AuthorizeResponse get(String url) throws ServerError {
+		HttpResponse response = server.get(url);
 		validateResponse(response);
 		return convertXmlToAuthorizeResponse(response);
 	}
