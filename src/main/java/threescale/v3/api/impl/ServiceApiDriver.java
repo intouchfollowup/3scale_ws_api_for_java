@@ -1,5 +1,6 @@
 package threescale.v3.api.impl;
 
+import static threescale.v3.api.ServiceApiConstants.DEFAULT_HOST;
 import static threescale.v3.api.ServiceApiConstants.HITS_PARAMETER;
 import static threescale.v3.api.ServiceApiConstants.PROVIDER_KEY_PARAMETER;
 import static threescale.v3.api.ServiceApiConstants.SERVICE_ID_PARAMETER;
@@ -21,9 +22,9 @@ import threescale.v3.api.ServiceApi;
 public class ServiceApiDriver implements ServiceApi {
 
 	private String provider_key;
-	private String host = DEFAULT_HOST;
 	private boolean useHttps = false;
 	private ServerAccessor server;
+	private String host = DEFAULT_HOST;
 
 	public ServiceApiDriver() {
 		this.server = new ServerAccessorDriver();
@@ -125,7 +126,6 @@ public class ServiceApiDriver implements ServiceApi {
 		String urlParams = encodeAsString(params);
 
 		final String s = getFullHostUrl() + "/transactions/oauth_authorize.xml?" + urlParams;
-
 		HttpResponse response = server.get(s);
 		if (response.getStatus() == 500) {
 			throw new ServerError(response.getBody());

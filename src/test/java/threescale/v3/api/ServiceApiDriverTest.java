@@ -1,5 +1,12 @@
 package threescale.v3.api;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static threescale.v3.api.ServiceApiConstants.DEFAULT_HOST;
+
+import org.jmock.Expectations;
+import org.jmock.integration.junit4.JUnitRuleMockery;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
@@ -7,12 +14,8 @@ import org.joda.time.format.DateTimeFormatter;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+
 import threescale.v3.api.impl.ServiceApiDriver;
-
-import static org.junit.Assert.*;
-
-import org.jmock.Expectations;
-import org.jmock.integration.junit4.JUnitRuleMockery;
 
 /**
  * Test class for the Service Api.
@@ -22,7 +25,7 @@ public class ServiceApiDriverTest {
     @Rule
     public JUnitRuleMockery context = new JUnitRuleMockery();
 
-    private final String host = ServiceApi.DEFAULT_HOST;
+    private final String host = DEFAULT_HOST;
     private final String provider_key = "1234abcd";
 
     private ServiceApi serviceApi;

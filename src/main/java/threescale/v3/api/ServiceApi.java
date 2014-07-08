@@ -4,7 +4,6 @@ package threescale.v3.api;
  * Service API interface.
  */
 public interface ServiceApi {
-    String DEFAULT_HOST = "su1.3scale.net";
 
     /**
      * Performs and AuthRep operation

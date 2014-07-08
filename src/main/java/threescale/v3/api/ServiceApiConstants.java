@@ -7,6 +7,7 @@ package threescale.v3.api;
  */
 public class ServiceApiConstants {
 
+	public static final String DEFAULT_HOST = "su1.3scale.net";
 	public static final String PROVIDER_KEY_PARAMETER = "provider_key";
 	public static final String APPLICATION_ID_PARAMETER = "app_id";
 	public static final String SERVICE_ID_PARAMETER = "service_id";
