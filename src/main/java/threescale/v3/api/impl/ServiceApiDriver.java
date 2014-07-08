@@ -4,7 +4,11 @@ import static threescale.v3.api.ServiceApiConstants.DEFAULT_HOST;
 import static threescale.v3.api.ServiceApiConstants.HITS_PARAMETER;
 import static threescale.v3.api.ServiceApiConstants.PROVIDER_KEY_PARAMETER;
 import static threescale.v3.api.ServiceApiConstants.SERVICE_ID_PARAMETER;
+import static threescale.v3.api.ServiceApiConstants.TRANSACTIONS_AUTHORIZE_URL;
+import static threescale.v3.api.ServiceApiConstants.TRANSACTIONS_AUTHREP_URL;
 import static threescale.v3.api.ServiceApiConstants.TRANSACTIONS_ID_PARAMETER;
+import static threescale.v3.api.ServiceApiConstants.TRANSACTIONS_OAUTH_AUTHORIZE_URL;
+import static threescale.v3.api.ServiceApiConstants.TRANSACTIONS_URL;
 import static threescale.v3.api.ServiceApiConstants.USAGE_PARAMETER;
 import threescale.v3.api.AuthorizeResponse;
 import threescale.v3.api.HttpResponse;
@@ -16,7 +20,7 @@ import threescale.v3.api.ServiceApi;
 
 /**
  * Concrete implementation of the ServiceApi.
- * 
+ *
  * @see ServiceApi
  */
 public class ServiceApiDriver implements ServiceApi {
@@ -65,7 +69,7 @@ public class ServiceApiDriver implements ServiceApi {
 		}
 		String urlParams = encodeAsString(metrics);
 
-		final String s = getFullHostUrl() + "/transactions/authrep.xml?" + urlParams;
+		final String s = getFullHostUrl() + TRANSACTIONS_AUTHREP_URL +"?" + urlParams;
 
 		HttpResponse response = server.get(s);
 		if (response.getStatus() == 500) {
@@ -94,7 +98,7 @@ public class ServiceApiDriver implements ServiceApi {
 			index++;
 		}
 
-		HttpResponse response = server.post(getFullHostUrl() + "/transactions.xml", encodeAsString(params));
+		HttpResponse response = server.post(getFullHostUrl() + TRANSACTIONS_URL, encodeAsString(params));
 		if (response.getStatus() == 500) {
 			throw new ServerError(response.getBody());
 		}
@@ -106,7 +110,7 @@ public class ServiceApiDriver implements ServiceApi {
 		parameters.add(PROVIDER_KEY_PARAMETER, provider_key);
 		String urlParams = encodeAsString(parameters);
 
-		final String s = getFullHostUrl() + "/transactions/authorize.xml?" + urlParams;
+		final String s = getFullHostUrl() + TRANSACTIONS_AUTHORIZE_URL +"?" + urlParams;
 		HttpResponse response = server.get(s);
 		if (response.getStatus() == 500) {
 			throw new ServerError(response.getBody());
@@ -125,7 +129,7 @@ public class ServiceApiDriver implements ServiceApi {
 
 		String urlParams = encodeAsString(params);
 
-		final String s = getFullHostUrl() + "/transactions/oauth_authorize.xml?" + urlParams;
+		final String s = getFullHostUrl() + TRANSACTIONS_OAUTH_AUTHORIZE_URL + "?" + urlParams;
 		HttpResponse response = server.get(s);
 		if (response.getStatus() == 500) {
 			throw new ServerError(response.getBody());
