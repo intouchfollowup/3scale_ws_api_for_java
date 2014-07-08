@@ -65,7 +65,6 @@ public class ServiceApiDriver implements ServiceApi {
 		String urlParams = encodeAsString(metrics);
 
 		final String s = getFullHostUrl() + "/transactions/authrep.xml?" + urlParams;
-		// System.out.println("Actual: " + s);
 
 		HttpResponse response = server.get(s);
 		if (response.getStatus() == 500) {
@@ -126,7 +125,6 @@ public class ServiceApiDriver implements ServiceApi {
 		String urlParams = encodeAsString(params);
 
 		final String s = getFullHostUrl() + "/transactions/oauth_authorize.xml?" + urlParams;
-		// System.out.println("Actual: " + s);
 
 		HttpResponse response = server.get(s);
 		if (response.getStatus() == 500) {
