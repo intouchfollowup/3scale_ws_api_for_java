@@ -1,5 +1,6 @@
 package threescale.v3.api.impl;
 
+import static threescale.v3.api.ServiceApiConstants.ADMIN_API_SIGNUP_URL;
 import static threescale.v3.api.ServiceApiConstants.DEFAULT_HOST;
 import static threescale.v3.api.ServiceApiConstants.DEFAULT_HOST_URL;
 import static threescale.v3.api.ServiceApiConstants.HITS_PARAMETER;
@@ -22,6 +23,7 @@ import threescale.v3.api.ReportResponse;
 import threescale.v3.api.ServerAccessor;
 import threescale.v3.api.ServerError;
 import threescale.v3.api.ServiceApi;
+import threescale.v3.api.http.response.AccountResponse;
 
 /**
  * Concrete implementation of the ServiceApi.
@@ -107,7 +109,7 @@ public class ServiceApiDriver implements ServiceApi {
 			index++;
 		}
 
-		return post(TRANSACTIONS_URL, params);
+		return new ReportResponse(post(TRANSACTIONS_URL, params));
 	}
 
 	@Override
@@ -122,10 +124,16 @@ public class ServiceApiDriver implements ServiceApi {
 		return get(TRANSACTIONS_OAUTH_AUTHORIZE_URL, params);
 	}
 
-	private ReportResponse post(String url, ParameterMap parameters) throws ServerError {
+	@Override
+	public AccountResponse signup(ParameterMap parameters) throws ServerError {
+		parameters.add(PROVIDER_KEY_PARAMETER, provider_key);
+		return new AccountResponse(post(ADMIN_API_SIGNUP_URL, parameters));
+	}
+
+	private HttpResponse post(String url, ParameterMap parameters) throws ServerError {
 		HttpResponse response = server.post(getFullHostUrl(url), encodeAsString(parameters));
 		validateResponse(response);
-		return new ReportResponse(response);
+		return response;
 	}
 
 	private AuthorizeResponse get(String url, ParameterMap parameters) throws ServerError {

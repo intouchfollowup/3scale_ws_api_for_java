@@ -1,5 +1,7 @@
 package threescale.v3.api;
 
+import threescale.v3.api.http.response.AccountResponse;
+
 /**
  * Service API interface.
  */
@@ -42,10 +44,13 @@ public interface ServiceApi {
      */
     public ReportResponse report(String service_id, ParameterMap... transactions) throws ServerError;
 
+    public AccountResponse signup(ParameterMap parameters) throws ServerError;
+
     /**
      * Get the URL of the 3scale server
      *
      * @return Server url
      */
     public String getHost();
+
 }
