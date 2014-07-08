@@ -15,39 +15,33 @@ import threescale.v3.api.ServiceApi;
  */
 public class ServiceApiDriver implements ServiceApi {
 
-	private String provider_key = null;
+	private String provider_key;
 	private String host = DEFAULT_HOST;
 	private boolean useHttps = false;
-
-	private ServerAccessor server = null;
+	private ServerAccessor server;
 
 	public ServiceApiDriver() {
 		this.server = new ServerAccessorDriver();
-
 	}
 
 	public ServiceApiDriver(String provider_key) {
+		this();
 		this.provider_key = provider_key;
-		this.server = new ServerAccessorDriver();
 	}
 
 	public ServiceApiDriver(String provider_key, boolean useHttps) {
-		this.provider_key = provider_key;
+		this(provider_key);
 		this.useHttps = useHttps;
-		this.server = new ServerAccessorDriver();
 	}
 
 	public ServiceApiDriver(String provider_key, String host) {
-		this.provider_key = provider_key;
+		this(provider_key);
 		this.host = host;
-		this.server = new ServerAccessorDriver();
 	}
 
 	public ServiceApiDriver(String provider_key, String host, boolean useHttps) {
-		this.provider_key = provider_key;
-		this.host = host;
+		this(provider_key, host);
 		this.useHttps = useHttps;
-		this.server = new ServerAccessorDriver();
 	}
 
 	@Override
