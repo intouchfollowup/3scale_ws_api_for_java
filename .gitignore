@@ -1,3 +1,9 @@
+# Eclipse files
+.project
+.classpath
+.settings
+ 
+threescale-api
 out
 *.iml
 .idea
