@@ -98,7 +98,7 @@ public class ServiceApiDriver implements ServiceApi {
 
 		int index = 0;
 		for (ParameterMap transaction : transactions) {
-			trans.add("" + index, transaction);
+			trans.add(Integer.toString(index), transaction);
 			index++;
 		}
 
