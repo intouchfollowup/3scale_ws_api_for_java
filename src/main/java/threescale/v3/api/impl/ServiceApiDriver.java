@@ -67,10 +67,6 @@ public class ServiceApiDriver implements ServiceApi {
 		initHostURL();
 	}
 
-	private void initHostURL() {
-		this.hostURL = useHttps ? (HTTPS_PROTOCAL + host) : (HTTP_PROTOCAL + host);
-	}
-
 	@Override
 	public AuthorizeResponse authrep(ParameterMap metrics) throws ServerError {
 		metrics.add(PROVIDER_KEY_PARAMETER, provider_key);
@@ -145,6 +141,10 @@ public class ServiceApiDriver implements ServiceApi {
 			throw new ServerError(response.getBody());
 		}
 		return convertXmlToAuthorizeResponse(response);
+	}
+
+	private void initHostURL() {
+		this.hostURL = useHttps ? (HTTPS_PROTOCAL + host) : (HTTP_PROTOCAL + host);
 	}
 
 	private String getFullHostUrl(String url, ParameterMap parameters) {
