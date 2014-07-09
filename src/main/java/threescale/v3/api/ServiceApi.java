@@ -1,6 +1,5 @@
 package threescale.v3.api;
 
-import threescale.v3.api.http.response.AccountResponse;
 
 /**
  * Service API interface.
@@ -43,8 +42,6 @@ public interface ServiceApi {
      * @throws ServerError Thrown if there is an error communicating with the 3Scale server
      */
     public ReportResponse report(String service_id, ParameterMap... transactions) throws ServerError;
-
-    public AccountResponse signup(ParameterMap parameters) throws ServerError;
 
     /**
      * Get the URL of the 3scale server
