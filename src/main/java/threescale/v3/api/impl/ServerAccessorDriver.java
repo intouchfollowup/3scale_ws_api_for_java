@@ -1,13 +1,17 @@
 package threescale.v3.api.impl;
 
-import threescale.v3.api.HttpResponse;
-import threescale.v3.api.ServerAccessor;
-import threescale.v3.api.ServerError;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import threescale.v3.api.HttpResponse;
+import threescale.v3.api.ServerAccessor;
+import threescale.v3.api.ServerError;
 
 /**
  * Performs GET's and POST's against the live 3Scale Server
@@ -23,7 +27,8 @@ public class ServerAccessorDriver implements ServerAccessor {
      * @throws ServerError
      * @see ServerAccessor
      */
-    public HttpResponse get(final String urlParams) throws ServerError {
+    @Override
+	public HttpResponse get(final String urlParams) throws ServerError {
         HttpURLConnection connection = null;
         URL url;
 
@@ -59,15 +64,17 @@ public class ServerAccessorDriver implements ServerAccessor {
     }
 
     private String getBody(InputStream content) throws IOException {
-        BufferedReader rd;
-        StringBuilder sb;
-        String line;
-        rd = new BufferedReader(new InputStreamReader(content));
-        sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
 
-        while ((line = rd.readLine()) != null) {
-            sb.append(line + '\n');
+        if(content != null) {
+	        BufferedReader rd = new BufferedReader(new InputStreamReader(content));
+
+	        String line;
+	        while ((line = rd.readLine()) != null) {
+	            sb.append(line + '\n');
+	        }
         }
+
         return sb.toString();
     }
 
@@ -78,7 +85,8 @@ public class ServerAccessorDriver implements ServerAccessor {
      * @throws ServerError
      * @see ServerAccessor
      */
-    public HttpResponse post(final String urlParams,final String data) throws ServerError {
+    @Override
+	public HttpResponse post(final String urlParams,final String data) throws ServerError {
         HttpURLConnection connection = null;
         OutputStreamWriter wr;
         URL url;
