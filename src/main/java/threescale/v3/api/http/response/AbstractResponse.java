@@ -69,7 +69,8 @@ public abstract class AbstractResponse {
     protected abstract void initSuccessResponse() throws ServerError;
 
     /**
-     * Test whether the {@link HttpResponse#getStatus()} is successful response
+     * Test whether the {@link HttpResponse#getStatus()} is successful response. By default a 200 is
+     * considered a success, to add additional success statuses override this method.
      *
      * @param response - {@link HttpResponse} to test
      * @return true if considered a successful response

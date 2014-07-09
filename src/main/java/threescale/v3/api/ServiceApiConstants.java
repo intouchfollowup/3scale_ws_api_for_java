@@ -26,5 +26,6 @@ public class ServiceApiConstants {
 	public static final String TRANSACTIONS_OAUTH_AUTHORIZE_URL = "/transactions/oauth_authorize.xml";
 	public static final String TRANSACTIONS_AUTHREP_URL = "/transactions/authrep.xml";
 	public static final String ADMIN_API_SIGNUP_URL = "/admin/api/signup.xml";
+	public static final String ADMIN_API_APPLICATIONS_FIND_URL = "/admin/api/applications/find.xml";
 
 }

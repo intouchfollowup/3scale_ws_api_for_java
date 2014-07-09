@@ -5,7 +5,6 @@ import static threescale.v3.api.ServiceApiConstants.DEFAULT_HOST_URL;
 import static threescale.v3.api.ServiceApiConstants.HTTPS_PROTOCAL;
 import static threescale.v3.api.ServiceApiConstants.HTTP_PROTOCAL;
 import static threescale.v3.api.ServiceApiConstants.PROVIDER_KEY_PARAMETER;
-import threescale.v3.api.AuthorizeResponse;
 import threescale.v3.api.HttpResponse;
 import threescale.v3.api.ParameterMap;
 import threescale.v3.api.ServerAccessor;
@@ -58,15 +57,12 @@ public class ApiDriver {
 		return response;
 	}
 
-	protected AuthorizeResponse get(String url, ParameterMap parameterMap) throws ServerError {
+	protected HttpResponse get(String url, ParameterMap parameterMap) throws ServerError {
 		addProviderKey(parameterMap);
-		return get(getFullHostUrl(url, parameterMap));
-	}
 
-	protected AuthorizeResponse get(String url) throws ServerError {
-		HttpResponse response = server.get(url);
+		HttpResponse response = server.get(getFullHostUrl(url, parameterMap));
 		validateResponse(response);
-		return convertXmlToAuthorizeResponse(response);
+		return response;
 	}
 
 	protected String getFullHostUrl(String url, ParameterMap parameterMap) {
@@ -90,10 +86,6 @@ public class ApiDriver {
 		if (response.getStatus() == 500) {
 			throw new ServerError(response.getBody());
 		}
-	}
-
-	private AuthorizeResponse convertXmlToAuthorizeResponse(HttpResponse res) throws ServerError {
-		return new AuthorizeResponse(res.getStatus(), res.getBody());
 	}
 
 	private void initHostURL() {

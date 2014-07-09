@@ -2,6 +2,7 @@ package threescale.v3.api.http.response;
 
 import static java.lang.Boolean.parseBoolean;
 import nu.xom.Element;
+import threescale.v3.api.HttpResponse;
 import threescale.v3.api.ServerError;
 
 public class ApplicationResponse extends AbstractResponse{
@@ -13,6 +14,10 @@ public class ApplicationResponse extends AbstractResponse{
 	private String userAccountId;
 	private boolean endUserRequired;
 	private String serviceId;
+
+	public ApplicationResponse(HttpResponse response) throws ServerError {
+		super(response);
+	}
 
 	public ApplicationResponse(Element element) throws ServerError {
 		super(element);

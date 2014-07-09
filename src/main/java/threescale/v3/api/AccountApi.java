@@ -1,6 +1,7 @@
 package threescale.v3.api;
 
 import threescale.v3.api.http.response.AccountResponse;
+import threescale.v3.api.http.response.ApplicationResponse;
 
 /**
  *
@@ -23,4 +24,13 @@ public interface AccountApi {
 	 * @throws ServerError
 	 */
     public AccountResponse signup(ParameterMap parameters) throws ServerError;
+
+    /**
+     * Finds an application by keys used on the integration of your API and 3scale's Service Management API or by id (no need to know the account_id).
+     * @param parameters - {@link ParameterMap}
+	 * @return {@link AccountResponse}
+	 *
+	 * @throws ServerError
+	 */
+    public ApplicationResponse findApplication(ParameterMap parameters) throws ServerError;
 }

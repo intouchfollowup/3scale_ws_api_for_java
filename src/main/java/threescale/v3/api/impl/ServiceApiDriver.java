@@ -11,6 +11,7 @@ import static threescale.v3.api.ServiceApiConstants.USAGE_PARAMETER;
 import static threescale.v3.utils.ObjectUtils.isNotNull;
 import static threescale.v3.utils.ObjectUtils.isNull;
 import threescale.v3.api.AuthorizeResponse;
+import threescale.v3.api.HttpResponse;
 import threescale.v3.api.ParameterMap;
 import threescale.v3.api.ReportResponse;
 import threescale.v3.api.ServerAccessor;
@@ -56,7 +57,7 @@ public class ServiceApiDriver extends ApiDriver implements ServiceApi {
 			usage.add(HITS_PARAMETER, "1");
 		}
 
-		return get(TRANSACTIONS_AUTHREP_URL, metrics);
+		return getAuthorize(TRANSACTIONS_AUTHREP_URL, metrics);
 	}
 
 	@Override
@@ -77,12 +78,20 @@ public class ServiceApiDriver extends ApiDriver implements ServiceApi {
 
 	@Override
 	public AuthorizeResponse authorize(ParameterMap parameters) throws ServerError {
-		return get(TRANSACTIONS_AUTHORIZE_URL, parameters);
+		return getAuthorize(TRANSACTIONS_AUTHORIZE_URL, parameters);
 	}
 
 	@Override
 	public AuthorizeResponse oauth_authorize(ParameterMap params) throws ServerError {
-		return get(TRANSACTIONS_OAUTH_AUTHORIZE_URL, params);
+		return getAuthorize(TRANSACTIONS_OAUTH_AUTHORIZE_URL, params);
+	}
+
+	private AuthorizeResponse getAuthorize(String url, ParameterMap parameterMap) throws ServerError {
+		return convertXmlToAuthorizeResponse(get(url, parameterMap));
+	}
+
+	private AuthorizeResponse convertXmlToAuthorizeResponse(HttpResponse res) throws ServerError {
+		return new AuthorizeResponse(res.getStatus(), res.getBody());
 	}
 
 	@Override
