@@ -13,10 +13,15 @@ public class AccountResponse extends AbstractResponse {
 	private String accountID;
 	private String state;
 	private String organisationName;
-	private List<ApplicationResponse> applications = new ArrayList<ApplicationResponse>();
+	private List<ApplicationResponse> applications;
 
 	public AccountResponse(HttpResponse response) throws ServerError {
 		super(response);
+	}
+
+	@Override
+	protected boolean isSuccessResponse(HttpResponse response) {
+		return response.getStatus() == 201;
 	}
 
 	@Override
@@ -27,11 +32,9 @@ public class AccountResponse extends AbstractResponse {
 		state = getFirstChildElementValue(rootElement, "state");
 		organisationName = getFirstChildElementValue(rootElement, "org_name");
 
-		List<Element> elementList = getFirstChildElementList(rootElement, "applications", "application");
-		if(elementList.isEmpty()) {
-			for (Element element : elementList) {
-				applications.add(new ApplicationResponse(element));
-			}
+		applications = new ArrayList<ApplicationResponse>();
+		for (Element element : getFirstChildElementList(rootElement, "applications", "application")) {
+			applications.add(new ApplicationResponse(element));
 		}
 	}
 

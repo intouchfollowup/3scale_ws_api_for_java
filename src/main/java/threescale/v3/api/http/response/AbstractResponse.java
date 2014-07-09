@@ -42,7 +42,7 @@ public abstract class AbstractResponse {
     public AbstractResponse(HttpResponse response) throws ServerError {
         this.response = response;
 		this.status = response.getStatus();
-        this.success = (status == 200 || status == 202);
+    	this.success = isSuccessResponse(response);
 
         initRootElement();
         initResponse();
@@ -57,6 +57,7 @@ public abstract class AbstractResponse {
     public AbstractResponse(Element rootElement) throws ServerError {
     	this.rootElement = rootElement;
     	this.success = true;
+
     	initResponse();
     }
 
@@ -66,6 +67,16 @@ public abstract class AbstractResponse {
      * @throws ServerError if XML was invalid or unable to be read.
      */
     protected abstract void initSuccessResponse() throws ServerError;
+
+    /**
+     * Test whether the {@link HttpResponse#getStatus()} is successful response
+     *
+     * @param response - {@link HttpResponse} to test
+     * @return true if considered a successful response
+     */
+    protected boolean isSuccessResponse(HttpResponse response) {
+    	return response.getStatus() == 200;
+    }
 
 	/**
      * Initializes this Response to indicate that it's considered a failure response.
