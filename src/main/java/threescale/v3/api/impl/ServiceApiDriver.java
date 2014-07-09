@@ -70,14 +70,7 @@ public class ServiceApiDriver extends ApiDriver implements ServiceApi {
 			parameterMap.add(SERVICE_ID_PARAMETER, service_id);
 		}
 
-		ParameterMap trans = new ParameterMap();
 		parameterMap.add(TRANSACTIONS_ID_PARAMETER, transactions);
-
-		int index = 0;
-		for (ParameterMap transaction : transactions) {
-			trans.add(Integer.toString(index), transaction);
-			index++;
-		}
 
 		return new ReportResponse(post(TRANSACTIONS_URL, parameterMap));
 	}
