@@ -5,6 +5,7 @@ import static threescale.v3.utils.ObjectUtils.isNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import nu.xom.Attribute;
@@ -28,6 +29,7 @@ public abstract class AbstractResponse {
 	private boolean success;
 	private String errorCode;
 	private String errorMessage;
+	private List<String> errors = new ArrayList<String>();
 	private HttpResponse response;
 	private Element rootElement;
 
@@ -71,9 +73,18 @@ public abstract class AbstractResponse {
      * @throws ServerError if XML was invalid or unable to be read.
      */
     protected void initFailedResponse() throws ServerError {
-        Attribute codeElement = getRootElement().getAttribute("code");
-        errorCode = codeElement.getValue();
-        errorMessage = getRootElement().getValue();
+    	Attribute codeElement = rootElement.getAttribute("code");
+        if(isNotNull(codeElement)) {
+        	errorCode = codeElement.getValue();
+        	errorMessage = rootElement.getValue();
+        }
+
+        Elements childElements = rootElement.getChildElements("error");
+        if(isNotNull(childElements)) {
+        	for (int i = 0; i < childElements.size(); i++) {
+        		errors.add(childElements.get(i).getValue());
+    		}
+    	}
     }
 
     private void initRootElement() throws ServerError {
@@ -132,6 +143,14 @@ public abstract class AbstractResponse {
 
 	public String getErrorMessage() {
 		return errorMessage;
+	}
+
+	public List<String> getErrors() {
+		return Collections.unmodifiableList(errors);
+	}
+
+	public boolean hasErrors() {
+		return errors.size() > 0;
 	}
 
 	public Element getRootElement() {
