@@ -15,6 +15,12 @@ import threescale.v3.xml.response.Application;
 import threescale.v3.xml.response.ApplicationKey;
 import threescale.v3.xml.response.ApplicationState;
 
+
+/**
+ *
+ * @author Andrew Wu
+ *
+ */
 public class ApplicationTest {
 
 	private Application app;

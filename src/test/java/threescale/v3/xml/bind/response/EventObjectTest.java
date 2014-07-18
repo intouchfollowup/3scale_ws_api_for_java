@@ -10,6 +10,12 @@ import org.junit.Test;
 import threescale.v3.xml.response.Application;
 import threescale.v3.xml.response.EventObject;
 
+
+/**
+ *
+ * @author Andrew Wu
+ *
+ */
 public class EventObjectTest {
 
 	private Application application;

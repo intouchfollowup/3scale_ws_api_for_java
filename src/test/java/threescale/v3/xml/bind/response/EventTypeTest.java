@@ -7,6 +7,12 @@ import org.junit.Test;
 
 import threescale.v3.xml.response.EventType;
 
+
+/**
+ *
+ * @author Andrew Wu
+ *
+ */
 public class EventTypeTest {
 
 	@Test

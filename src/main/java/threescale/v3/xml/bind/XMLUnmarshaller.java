@@ -6,6 +6,12 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+
+/**
+ *
+ * @author Andrew Wu
+ *
+ */
 public class XMLUnmarshaller {
 
 	@SuppressWarnings("unchecked")

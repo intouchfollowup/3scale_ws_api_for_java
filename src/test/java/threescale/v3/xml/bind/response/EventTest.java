@@ -12,6 +12,12 @@ import threescale.v3.xml.response.Event;
 import threescale.v3.xml.response.EventObject;
 import threescale.v3.xml.response.EventType;
 
+
+/**
+ *
+ * @author Andrew Wu
+ *
+ */
 public class EventTest {
 
 	private EventObject eventObject;

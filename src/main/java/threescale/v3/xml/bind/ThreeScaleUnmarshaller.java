@@ -5,6 +5,12 @@ import javax.xml.bind.JAXBException;
 import threescale.v3.api.http.response.ApplicationResponse;
 import threescale.v3.xml.response.Application;
 
+
+/**
+ *
+ * @author Andrew Wu
+ *
+ */
 public class ThreeScaleUnmarshaller {
 
 	/**

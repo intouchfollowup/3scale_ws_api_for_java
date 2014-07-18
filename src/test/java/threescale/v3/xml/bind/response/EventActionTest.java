@@ -8,6 +8,12 @@ import org.junit.Test;
 import threescale.v3.xml.response.EventAction;
 import threescale.v3.xml.response.EventType;
 
+
+/**
+ *
+ * @author Andrew Wu
+ *
+ */
 public class EventActionTest {
 
 	@Test
