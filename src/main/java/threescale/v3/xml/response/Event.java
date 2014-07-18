@@ -29,16 +29,8 @@ public class Event {
 	 */
 	private EventObject object;
 
-	public boolean isForApplication() {
-		return EventType.isApplication(type) && object.hasApplication();
-	}
-
-	public boolean hasValidApplicationId() {
-		return object.hasValidApplicationId();
-	}
-
-	public String getApplicationId() {
-		return object == null ? null : object.getApplicationId();
+	public boolean hasEventObject() {
+		return object != null;
 	}
 
 	public EventType getType() {

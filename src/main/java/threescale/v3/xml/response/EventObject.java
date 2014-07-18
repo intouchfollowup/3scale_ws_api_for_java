@@ -11,14 +11,6 @@ public class EventObject {
 		return application != null;
 	}
 
-	public boolean hasValidApplicationId() {
-		return application.hasId();
-	}
-
-	public String getApplicationId() {
-		return application == null  ? null : application.getApplicationId();
-	}
-
 	public Application getApplication() {
 		return application;
 	}

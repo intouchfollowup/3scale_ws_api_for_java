@@ -1,7 +1,6 @@
 package threescale.v3.xml.bind.response;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Before;
@@ -34,20 +33,5 @@ public class EventObjectTest {
 
 		eventObject.setApplication(null);
 		assertThat(eventObject.hasApplication(), equalTo(false));
-	}
-
-	@Test
-	public void getApplicationIdShouldReturnNullIfObjectHasNoApplication() {
-		eventObject.setApplication(null);
-
-		assertThat(eventObject.getApplicationId(), nullValue());
-	}
-
-	@Test
-	public void testGetApplicationId() {
-		application.setApplicationId("application_id");
-		eventObject.setApplication(application);
-
-		assertThat(eventObject.getApplicationId(), equalTo("application_id"));
 	}
 }
