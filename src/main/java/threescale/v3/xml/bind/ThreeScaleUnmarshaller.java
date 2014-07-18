@@ -13,6 +13,28 @@ import threescale.v3.xml.response.Application;
  */
 public class ThreeScaleUnmarshaller {
 
+	/** Singleton instance **/
+	private static ThreeScaleUnmarshaller instance;
+
+	private XMLUnmarshaller xmlUnmarshaller;
+
+	private ThreeScaleUnmarshaller() {
+		xmlUnmarshaller = XMLUnmarshaller.getInstance();
+	}
+
+	/**
+	 * Singleton access to the {@link ThreeScaleUnmarshaller}
+	 *
+	 * @return {@link ThreeScaleUnmarshaller}
+	 */
+	public static ThreeScaleUnmarshaller getInstance() {
+		if(instance == null) {
+			instance = new ThreeScaleUnmarshaller();
+		}
+		return instance;
+	}
+
+
 	/**
 	 * Convert an {@link ApplicationResponse} to an {@link Application}
 	 *
@@ -20,7 +42,7 @@ public class ThreeScaleUnmarshaller {
 	 * @return {@link Application}
 	 * @throws JAXBException
 	 */
-	public static Application unmarshall(ApplicationResponse response) throws JAXBException {
+	public Application unmarshall(ApplicationResponse response) throws JAXBException {
 		return unmarshall(response.getRootElement().toXML());
 	}
 
@@ -31,7 +53,7 @@ public class ThreeScaleUnmarshaller {
 	 * @return {@link Application}
 	 * @throws JAXBException
 	 */
-	public static Application unmarshall(String source) throws JAXBException {
-		return XMLUnmarshaller.unmarshall(Application.class, source);
+	public Application unmarshall(String source) throws JAXBException {
+		return xmlUnmarshaller.unmarshall(Application.class, source);
 	}
 }

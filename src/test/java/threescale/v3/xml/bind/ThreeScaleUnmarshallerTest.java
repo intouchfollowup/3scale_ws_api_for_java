@@ -4,7 +4,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-import static threescale.v3.xml.bind.ThreeScaleUnmarshaller.unmarshall;
 
 import java.io.IOException;
 
@@ -30,6 +29,8 @@ public class ThreeScaleUnmarshallerTest {
 
 	private ApplicationResponse applicationResponse;
 
+	private ThreeScaleUnmarshaller unmarshaller = ThreeScaleUnmarshaller.getInstance();
+
 	@Before
 	public void setup() //
 			throws ServerError, JAXBException, ValidityException, ParsingException, IOException {
@@ -39,7 +40,7 @@ public class ThreeScaleUnmarshallerTest {
 	@Test
 	public void canUnmarshallApplicationResponse() {
 		try {
-			Application app = unmarshall(applicationResponse);
+			Application app = unmarshaller.unmarshall(applicationResponse);
 
 			// randomly check a few fields
 			assertThat(app, notNullValue());
@@ -54,7 +55,7 @@ public class ThreeScaleUnmarshallerTest {
 	@Test
 	public void canUnmarshallXmlString() {
 		try {
-			Application app = unmarshall(APPLICATION_XML);
+			Application app = unmarshaller.unmarshall(APPLICATION_XML);
 
 			// randomly check a few fields
 			assertThat(app, notNullValue());
