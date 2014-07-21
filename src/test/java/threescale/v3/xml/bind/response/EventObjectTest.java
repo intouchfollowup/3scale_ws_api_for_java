@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import threescale.v3.xml.response.Application;
-import threescale.v3.xml.response.EventObject;
+import threescale.v3.xml.webhook.EventObject;
 
 
 /**

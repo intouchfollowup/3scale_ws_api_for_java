@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 
 
 /**
@@ -14,26 +13,26 @@ import javax.xml.bind.Unmarshaller;
  * @author Andrew Wu, Moncef
  *
  */
-public class XMLUnmarshaller {
+public class Unmarshaller {
 
 	/** Singleton instance **/
-	private static XMLUnmarshaller instance;
+	private static Unmarshaller instance;
 
 	/** Used for "caching" {@link JAXBContext} per {@link Class} type **/
 	private Map<Class<?>, JAXBContext> jaxbContextMap = new HashMap<Class<?>, JAXBContext>();
 
-	private XMLUnmarshaller() {
+	private Unmarshaller() {
 		// Singleton access only
 	}
 
 	/**
-	 * Singleton access to the {@link XMLUnmarshaller}
+	 * Singleton access to the {@link Unmarshaller}
 	 *
 	 * @return {@link ThreeScaleUnmarshaller}
 	 */
-	public static XMLUnmarshaller getInstance() {
+	public static Unmarshaller getInstance() {
 		if(instance == null) {
-			instance = new XMLUnmarshaller();
+			instance = new Unmarshaller();
 		}
 		return instance;
 	}
@@ -41,7 +40,7 @@ public class XMLUnmarshaller {
 	@SuppressWarnings("unchecked")
 	public <T> T unmarshall(Class<T> clazz, String source) throws JAXBException {
 		StringReader reader = new StringReader(source);
-		Unmarshaller unmarshaller = getJAXBContext(clazz).createUnmarshaller();
+		javax.xml.bind.Unmarshaller unmarshaller = getJAXBContext(clazz).createUnmarshaller();
 		return (T) unmarshaller.unmarshal(reader);
 	}
 

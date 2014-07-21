@@ -1,21 +1,15 @@
 package threescale.v3.api.http.response;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static threescale.v3.utils.ObjectUtils.isNotNull;
-import static threescale.v3.utils.ObjectUtils.isNull;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import javax.xml.bind.JAXBException;
 
-import nu.xom.Attribute;
-import nu.xom.Builder;
-import nu.xom.Document;
-import nu.xom.Element;
-import nu.xom.Elements;
-import nu.xom.ParsingException;
 import threescale.v3.api.HttpResponse;
 import threescale.v3.api.ServerError;
+import threescale.v3.xml.bind.Unmarshaller;
+import threescale.v3.xml.response.Error;
+import threescale.v3.xml.response.Errors;
 
 /**
  * Abstract 3scale response object wrapping around {@link HttpResponse}
@@ -23,15 +17,16 @@ import threescale.v3.api.ServerError;
  * @author Moncef
  *
  */
-public abstract class AbstractResponse {
+public abstract class AbstractResponse<T> {
 
 	private int status;
 	private boolean success;
-	private String errorCode;
-	private String errorMessage;
-	private List<String> errors = new ArrayList<String>();
+	private Errors errors;
+	private Error error;
+	private Unmarshaller unmarshaller = Unmarshaller.getInstance();
 	private HttpResponse response;
-	private Element rootElement;
+	private Class<T> marshallToClass;
+	private T root;
 
 	/**
      * Create a {@link AbstractResponse} from an HTML POST
@@ -39,34 +34,13 @@ public abstract class AbstractResponse {
      * @param response - {@link HttpResponse}
      * @throws ServerError
      */
-    public AbstractResponse(HttpResponse response) throws ServerError {
+    public AbstractResponse(HttpResponse response, Class<T> marshallToClass) throws ServerError {
         this.response = response;
+		this.marshallToClass = marshallToClass;
 		this.status = response.getStatus();
     	this.success = isSuccessResponse(response);
-
-        initRootElement();
-        initResponse();
+    	unmarshallOnResponse();
     }
-
-    /**
-     * Create a {@link AbstractResponse} from an {@link Element}
-     *
-     * @param rootElement - {@link Element}
-     * @throws ServerError
-     */
-    public AbstractResponse(Element rootElement) throws ServerError {
-    	this.rootElement = rootElement;
-    	this.success = true;
-
-    	initResponse();
-    }
-
-    /**
-     * Initializes this Response to indicate that it's considered a success response.
-     *
-     * @throws ServerError if XML was invalid or unable to be read.
-     */
-    protected abstract void initSuccessResponse() throws ServerError;
 
     /**
      * Test whether the {@link HttpResponse#getStatus()} is successful response. By default a 200 is
@@ -79,67 +53,54 @@ public abstract class AbstractResponse {
     	return response.getStatus() == 200;
     }
 
+    /**
+     * Unmarshall based on the response, i.e. a successful or failed call to the 3scale API will
+     * try to unmarshall the response on different expected outputs.
+     *
+     * @throws ServerError
+     */
+    protected void unmarshallOnResponse() throws ServerError {
+    	if(success) {
+    		unmarshall(marshallToClass);
+    	} else {
+    		unmarshallFailedResponse();
+    	}
+    }
+
+    @SuppressWarnings("unchecked")
+	protected void unmarshall(Class<?> clazz) throws ServerError {
+    	String content = response.getBody();
+    	try {
+			this.root = (T) unmarshaller.unmarshall(clazz, content);
+    	} catch (JAXBException e) {
+    		throw new ServerError("Error processing the XML : " + e.getMessage());
+		}
+    }
+
 	/**
      * Initializes this Response to indicate that it's considered a failure response.
      *
      * @throws ServerError if XML was invalid or unable to be read.
      */
-    protected void initFailedResponse() throws ServerError {
-    	Attribute codeElement = rootElement.getAttribute("code");
-        if(isNotNull(codeElement)) {
-        	errorCode = codeElement.getValue();
-        	errorMessage = rootElement.getValue();
-        }
-
-        Elements childElements = rootElement.getChildElements("error");
-        if(isNotNull(childElements)) {
-        	for (int i = 0; i < childElements.size(); i++) {
-        		errors.add(childElements.get(i).getValue());
-    		}
-    	}
-    }
-
-    private void initRootElement() throws ServerError {
+    protected void unmarshallFailedResponse() throws ServerError {
     	String content = response.getBody();
 
-    	try {
-            Document document = new Builder().build(content, null);
-            this.rootElement = document.getRootElement();
-        } catch (ParsingException ex) {
-            throw new ServerError("The xml received was invalid: " + content);
-        } catch (IOException ex) {
-            throw new ServerError("Error processing the XML");
-        }
-    }
-
-    protected String getFirstChildElementValue(Element parent, String name) {
-    	Element element = parent.getFirstChildElement(name);
-		return isNull(element) ?  null : element.getValue();
-    }
-
-    protected List<Element> getFirstChildElementList(Element parent, String listName, String listChildName) {
-    	List<Element> list = new ArrayList<Element>();
-    	Element listElement = parent.getFirstChildElement(listName);
-
-    	if (isNotNull(listElement)) {
-            Elements childElements = listElement.getChildElements(listChildName);
-            if(isNotNull(childElements)) {
-            	for (int i = 0; i < childElements.size(); i++) {
-            		list.add(childElements.get(i));
-            	}
-            }
-        }
-
-    	return list;
-    }
-
-    private void initResponse() throws ServerError {
-    	if(success) {
-    		initSuccessResponse();
-    	} else {
-    		initFailedResponse();
+    	if(isNotBlank(content)) {
+	    	try {
+	    		// handle single error like  : <error>Acces Denied</error>
+	    		error = unmarshaller.unmarshall(Error.class, content);
+	    	} catch(JAXBException e) {
+	    		// couldn't get Error, maybe 3scale showed <errors><error>Users is invalid</error></errors>
+	    		try {
+					errors = unmarshaller.unmarshall(Errors.class, content);
+				} catch (JAXBException e1) {
+					// it's an xml output from 3scale that has not been implemented
+					// thus needs to be implemented, wish we knew all cases.
+		    		throw new ServerError("Error processing the XML : " + e1.getMessage());
+				}
+	    	}
     	}
-	}
+    }
 
 	public int getStatus() {
 		return status;
@@ -149,23 +110,23 @@ public abstract class AbstractResponse {
 		return success;
 	}
 
-	public String getErrorCode() {
-		return errorCode;
-	}
-
-	public String getErrorMessage() {
-		return errorMessage;
-	}
-
-	public List<String> getErrors() {
-		return Collections.unmodifiableList(errors);
+	public boolean hasError() {
+		return isNotNull(error);
 	}
 
 	public boolean hasErrors() {
-		return errors.size() > 0;
+		return isNotNull(errors);
 	}
 
-	public Element getRootElement() {
-		return rootElement;
+	public Error getError() {
+		return error;
+	}
+
+	public Errors getErrors() {
+		return errors;
+	}
+
+	public T getRoot() {
+		return root;
 	}
 }

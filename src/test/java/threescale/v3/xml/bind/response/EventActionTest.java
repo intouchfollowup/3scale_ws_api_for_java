@@ -5,8 +5,8 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
-import threescale.v3.xml.response.EventAction;
-import threescale.v3.xml.response.EventType;
+import threescale.v3.xml.webhook.EventAction;
+import threescale.v3.xml.webhook.EventType;
 
 
 /**
