@@ -3,10 +3,15 @@ package threescale.v3.xml.response;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import threescale.v3.xml.adapters.ElementMapAdapter;
 
 @XmlRootElement(name = "application")
 public class Application {
@@ -23,7 +28,8 @@ public class Application {
 	private ApplicationPlan plan;
 	private String name;
 	private String description;
-	private Object extraFields;
+	private Map<String, String> extraFields = new HashMap<String, String>();
+
 
 	public boolean hasId() {
 		return isNotBlank(id);
@@ -148,12 +154,13 @@ public class Application {
 		this.description = description;
 	}
 
-	@XmlElement(name = "extra_fields")
-	public Object getExtraFields() {
-		return extraFields;
-	}
+	@XmlElement(name="extra_fields")
+	@XmlJavaTypeAdapter(ElementMapAdapter.class)
+    public Map<String, String> getExtraFields() {
+        return extraFields;
+    }
 
-	public void setExtraFields(Object extraFields) {
+	public void setExtraFields(Map<String, String> extraFields) {
 		this.extraFields = extraFields;
 	}
 }
