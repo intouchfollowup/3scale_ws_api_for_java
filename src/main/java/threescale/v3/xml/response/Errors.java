@@ -1,19 +1,27 @@
 package threescale.v3.xml.response;
 
+import static threescale.v3.utils.ObjectUtils.isNotNull;
+
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "errors")
 public class Errors {
 
-	private List<Error> error;
+	private List<Error> errors;
 
-	public List<Error> getError() {
-		return error;
+	public boolean hasErrors() {
+		return isNotNull(errors) && !errors.isEmpty();
 	}
 
-	public void setError(List<Error> error) {
-		this.error = error;
+	@XmlElement(name = "error")
+	public List<Error> getErrors() {
+		return errors;
+	}
+
+	public void setErrors(List<Error> error) {
+		this.errors = error;
 	}
 }

@@ -11,8 +11,8 @@ public class AccountResponse extends AbstractResponse<Account> {
 	}
 
 	@Override
-	protected boolean isSuccessResponse(HttpResponse response) {
-		return response.getStatus() == 201;
+	protected boolean isSuccessResponse() {
+		return getStatus() == 201;
 	}
 
 	public Account getAccount() {

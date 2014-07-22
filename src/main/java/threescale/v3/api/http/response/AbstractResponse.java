@@ -1,7 +1,11 @@
 package threescale.v3.api.http.response;
 
+import static java.util.Collections.emptyList;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static threescale.v3.utils.ObjectUtils.isNotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
@@ -19,10 +23,8 @@ import threescale.v3.xml.response.Errors;
  */
 public abstract class AbstractResponse<T> {
 
-	private int status;
 	private boolean success;
 	private Errors errors;
-	private Error error;
 	private Unmarshaller unmarshaller = Unmarshaller.getInstance();
 	private HttpResponse response;
 	private Class<T> marshallToClass;
@@ -37,8 +39,7 @@ public abstract class AbstractResponse<T> {
     public AbstractResponse(HttpResponse response, Class<T> marshallToClass) throws ServerError {
         this.response = response;
 		this.marshallToClass = marshallToClass;
-		this.status = response.getStatus();
-    	this.success = isSuccessResponse(response);
+    	this.success = isSuccessResponse();
     	unmarshallOnResponse();
     }
 
@@ -46,11 +47,10 @@ public abstract class AbstractResponse<T> {
      * Test whether the {@link HttpResponse#getStatus()} is successful response. By default a 200 is
      * considered a success, to add additional success statuses override this method.
      *
-     * @param response - {@link HttpResponse} to test
      * @return true if considered a successful response
      */
-    protected boolean isSuccessResponse(HttpResponse response) {
-    	return response.getStatus() == 200;
+    protected boolean isSuccessResponse() {
+    	return getStatus() == 200;
     }
 
     /**
@@ -87,10 +87,20 @@ public abstract class AbstractResponse<T> {
 
     	if(isNotBlank(content)) {
 	    	try {
-	    		// handle single error like  : <error>Acces Denied</error>
-	    		error = unmarshaller.unmarshall(Error.class, content);
+	    		// handle single error like  : <error>Access Denied</error>
+	    		 Error error = unmarshaller.unmarshall(Error.class, content);
+
+	    		// combine the single error to go into the Errors object, so we only
+	    		// have to read one of them out when needed
+	    		List<Error> list = new ArrayList<Error>();
+	    		list.add(error);
+
+	    		errors = new Errors();
+	    		errors.setErrors(list);
+
 	    	} catch(JAXBException e) {
-	    		// couldn't get Error, maybe 3scale showed <errors><error>Users is invalid</error></errors>
+	    		// couldn't get Error, maybe 3scale showed Errors object like so :
+	    		// <errors><error>Users is invalid</error></errors>
 	    		try {
 					errors = unmarshaller.unmarshall(Errors.class, content);
 				} catch (JAXBException e1) {
@@ -103,27 +113,23 @@ public abstract class AbstractResponse<T> {
     }
 
 	public int getStatus() {
-		return status;
+		return response.getStatus();
 	}
 
 	public boolean isSuccess() {
 		return success;
 	}
 
-	public boolean hasError() {
-		return isNotNull(error);
-	}
-
 	public boolean hasErrors() {
-		return isNotNull(errors);
+		return isNotNull(errors) && errors.hasErrors();
 	}
 
-	public Error getError() {
-		return error;
-	}
-
-	public Errors getErrors() {
-		return errors;
+	public List<Error> getErrors() {
+		if(hasErrors()) {
+			return errors.getErrors();
+		}
+		// be kind return empty instead of null
+		return emptyList();
 	}
 
 	public T getRoot() {
