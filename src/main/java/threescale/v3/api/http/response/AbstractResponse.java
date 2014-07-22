@@ -40,7 +40,7 @@ public abstract class AbstractResponse<T> {
         this.response = response;
 		this.marshallToClass = marshallToClass;
     	this.success = isSuccessResponse();
-    	unmarshallOnResponse();
+    	initOnResponse();
     }
 
     /**
@@ -57,59 +57,61 @@ public abstract class AbstractResponse<T> {
      * Unmarshall based on the response, i.e. a successful or failed call to the 3scale API will
      * try to unmarshall the response on different expected outputs.
      *
-     * @throws ServerError
+     * @throws ServerError - if initialization based on Response failed.
      */
-    protected void unmarshallOnResponse() throws ServerError {
-    	if(success) {
-    		unmarshall(marshallToClass);
-    	} else {
-    		unmarshallFailedResponse();
-    	}
+    protected void initOnResponse() throws ServerError {
+	    try {
+	    	if(success) {
+	    		unmarshallForSuccess();
+	    	} else {
+	    		unmarshallForFailure();
+	    	}
+	    } catch (JAXBException e) {
+			throw new ServerError("Error processing the XML : " + e.getMessage());
+		}
     }
 
-    @SuppressWarnings("unchecked")
-	protected void unmarshall(Class<?> clazz) throws ServerError {
-    	String content = response.getBody();
-    	try {
-			this.root = (T) unmarshaller.unmarshall(clazz, content);
-    	} catch (JAXBException e) {
-    		throw new ServerError("Error processing the XML : " + e.getMessage());
-		}
+	protected void unmarshallForSuccess() throws JAXBException {
+    	this.root = unmarshaller.unmarshall(marshallToClass, response.getBody());
     }
 
 	/**
      * Initializes this Response to indicate that it's considered a failure response.
      *
-     * @throws ServerError if XML was invalid or unable to be read.
+     * @throws JAXBException if XML was invalid or unable to be read.
      */
-    protected void unmarshallFailedResponse() throws ServerError {
+    protected void unmarshallForFailure() throws JAXBException {
     	String content = response.getBody();
 
     	if(isNotBlank(content)) {
 	    	try {
 	    		// handle single error like  : <error>Access Denied</error>
-	    		 Error error = unmarshaller.unmarshall(Error.class, content);
-
-	    		// combine the single error to go into the Errors object, so we only
-	    		// have to read one of them out when needed
-	    		List<Error> list = new ArrayList<Error>();
-	    		list.add(error);
-
-	    		errors = new Errors();
-	    		errors.setErrors(list);
-
+	    		errors = createErrors(unmarshaller.unmarshall(Error.class, content));
 	    	} catch(JAXBException e) {
-	    		// couldn't get Error, maybe 3scale showed Errors object like so :
+	    		// couldn't get Error, maybe 3scale showed Errors object directly like so :
 	    		// <errors><error>Users is invalid</error></errors>
-	    		try {
-					errors = unmarshaller.unmarshall(Errors.class, content);
-				} catch (JAXBException e1) {
-					// it's an xml output from 3scale that has not been implemented
-					// thus needs to be implemented, wish we knew all cases.
-		    		throw new ServerError("Error processing the XML : " + e1.getMessage());
-				}
+
+	    		// this might throw another JAXBException if it's an xml output from 3scale that has
+	    		// not been implemented, wish we knew all cases.
+				errors = unmarshaller.unmarshall(Errors.class, content);
 	    	}
     	}
+    }
+
+    /**
+     * Combine a single {@link Error} to go into an {@link Errors} object, so we only have to read
+     * the {@link Errors} out when needed to check errors.
+     *
+     * @param error - {@link Error}
+     * @return {@link Errors}
+     */
+    private Errors createErrors(Error error) {
+		List<Error> list = new ArrayList<Error>();
+		list.add(error);
+
+		Errors errors = new Errors();
+		errors.setErrors(list);
+		return errors;
     }
 
 	public int getStatus() {
