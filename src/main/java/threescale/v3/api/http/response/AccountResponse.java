@@ -14,8 +14,4 @@ public class AccountResponse extends AbstractResponse<Account> {
 	protected boolean isSuccessResponse() {
 		return getStatus() == 201;
 	}
-
-	public Account getAccount() {
-		return getRoot();
-	}
 }

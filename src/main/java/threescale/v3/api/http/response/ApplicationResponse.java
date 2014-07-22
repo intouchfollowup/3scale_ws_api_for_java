@@ -14,8 +14,4 @@ public class ApplicationResponse extends AbstractResponse<Application> {
 	public ApplicationResponse(HttpResponse response) throws ServerError {
 		super(response, Application.class);
 	}
-
-	public Application getApplication() {
-		return getRoot();
-	}
 }

@@ -28,7 +28,7 @@ public abstract class AbstractResponse<T> {
 	private Unmarshaller unmarshaller = Unmarshaller.getInstance();
 	private HttpResponse response;
 	private Class<T> marshallToClass;
-	private T root;
+	private T body;
 
 	/**
      * Create a {@link AbstractResponse} from an HTML POST
@@ -72,7 +72,7 @@ public abstract class AbstractResponse<T> {
     }
 
 	protected void unmarshallForSuccess() throws JAXBException {
-    	this.root = unmarshaller.unmarshall(marshallToClass, response.getBody());
+    	this.body = unmarshaller.unmarshall(marshallToClass, response.getBody());
     }
 
 	/**
@@ -134,7 +134,12 @@ public abstract class AbstractResponse<T> {
 		return emptyList();
 	}
 
-	public T getRoot() {
-		return root;
+	/**
+	 * Gets the Unmarshalled Java Typed version of the response
+	 *
+	 * @return T
+	 */
+	public T getBody() {
+		return body;
 	}
 }
