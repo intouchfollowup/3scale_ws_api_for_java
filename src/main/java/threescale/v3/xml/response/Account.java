@@ -16,7 +16,7 @@ public class Account {
 	@XmlElement(name = "org_name")
 	private String orgName;
 
-	private List<Application> application;
+	private List<Application> applications;
 
 	public boolean hasId() {
 		return isNotBlank(id);
@@ -46,11 +46,12 @@ public class Account {
 		this.orgName = orgName;
 	}
 
-	public List<Application> getApplication() {
-		return application;
+	@XmlElement(name="application")
+	public List<Application> getApplications() {
+		return applications;
 	}
 
-	public void setApplication(List<Application> application) {
-		this.application = application;
+	public void setApplications(List<Application> application) {
+		this.applications = application;
 	}
 }
