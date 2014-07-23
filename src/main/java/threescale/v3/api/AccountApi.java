@@ -44,4 +44,13 @@ public interface AccountApi {
      * @throws ServerError
      */
     public ServiceResponse readService(String serviceId) throws ServerError;
+
+    /**
+     * Updates an existing {@link Service} and returns it in {@link ServiceResponse} by service id
+     *
+     * @param serviceId - required id of the service
+     * @return {@link ServiceResponse}
+     * @throws ServerError
+     */
+	public ServiceResponse updateService(String serviceId, ParameterMap parameterMap) throws ServerError;
 }

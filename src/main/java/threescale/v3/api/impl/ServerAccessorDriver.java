@@ -87,6 +87,22 @@ public class ServerAccessorDriver implements ServerAccessor {
      */
     @Override
 	public HttpResponse post(final String urlParams,final String data) throws ServerError {
+        return post(urlParams, data, "POST");
+    }
+
+    /**
+     * @param urlParams url to access
+     * @param data      The data to be sent
+     * @return Response from the server
+     * @throws ServerError
+     * @see ServerAccessor
+     */
+    @Override
+    public HttpResponse put(final String urlParams,final String data) throws ServerError {
+    	return post(urlParams, data, "PUT");
+    }
+
+	private HttpResponse post(final String urlParams,final String data, String requestMethod) throws ServerError {
         HttpURLConnection connection = null;
         OutputStreamWriter wr;
         URL url;
@@ -98,7 +114,7 @@ public class ServerAccessorDriver implements ServerAccessor {
         }
         try {
             connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
+            connection.setRequestMethod(requestMethod);
             connection.setDoOutput(true);
             connection.setReadTimeout(10000);
             connection.setRequestProperty("Accept", "*/*");

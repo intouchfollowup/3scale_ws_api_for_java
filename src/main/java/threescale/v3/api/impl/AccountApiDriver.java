@@ -2,9 +2,10 @@ package threescale.v3.api.impl;
 
 import static java.lang.String.format;
 import static threescale.v3.api.AccountApiConstants.ADMIN_API_APPLICATIONS_FIND_URL;
+import static threescale.v3.api.AccountApiConstants.ADMIN_API_SERVICES_READ;
+import static threescale.v3.api.AccountApiConstants.ADMIN_API_SERVICES_UPDATE;
 import static threescale.v3.api.AccountApiConstants.ADMIN_API_SIGNUP_URL;
 import threescale.v3.api.AccountApi;
-import threescale.v3.api.AccountApiConstants;
 import threescale.v3.api.ParameterMap;
 import threescale.v3.api.ServerError;
 import threescale.v3.api.http.response.AccountResponse;
@@ -40,6 +41,11 @@ public class AccountApiDriver extends ApiDriver implements AccountApi{
 
 	@Override
 	public ServiceResponse readService(String serviceId) throws ServerError {
-		return new ServiceResponse(get(format(AccountApiConstants.ADMIN_API_SERVICES_READ, serviceId)));
+		return new ServiceResponse(get(format(ADMIN_API_SERVICES_READ, serviceId)));
+	}
+
+	@Override
+	public ServiceResponse updateService(String serviceId, ParameterMap parameterMap) throws ServerError {
+		return new ServiceResponse(put(format(ADMIN_API_SERVICES_UPDATE, serviceId), parameterMap));
 	}
 }

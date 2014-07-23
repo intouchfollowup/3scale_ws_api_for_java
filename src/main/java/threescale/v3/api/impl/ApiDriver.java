@@ -57,6 +57,14 @@ public class ApiDriver {
 		return response;
 	}
 
+	protected HttpResponse put(String url, ParameterMap parameterMap) throws ServerError {
+		addProviderKey(parameterMap);
+
+		HttpResponse response = server.put(getFullHostUrl(url), encodeAsString(parameterMap));
+		validateResponse(response);
+		return response;
+	}
+
 	protected HttpResponse get(String url, ParameterMap parameterMap) throws ServerError {
 		addProviderKey(parameterMap);
 

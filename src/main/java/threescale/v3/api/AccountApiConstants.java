@@ -14,5 +14,5 @@ public class AccountApiConstants {
 	public static final String ADMIN_API_SIGNUP_URL = "/admin/api/signup.xml";
 	public static final String ADMIN_API_APPLICATIONS_FIND_URL = "/admin/api/applications/find.xml";
 	public static final String ADMIN_API_SERVICES_READ = "/admin/api/services/%s.xml";
-
+	public static final String ADMIN_API_SERVICES_UPDATE = "/admin/api/services/%s.xml";
 }
