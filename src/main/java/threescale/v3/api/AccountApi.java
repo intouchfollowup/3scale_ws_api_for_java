@@ -2,6 +2,8 @@ package threescale.v3.api;
 
 import threescale.v3.api.http.response.AccountResponse;
 import threescale.v3.api.http.response.ApplicationResponse;
+import threescale.v3.api.http.response.service.ServiceResponse;
+import threescale.v3.xml.response.service.Service;
 
 /**
  *
@@ -33,4 +35,13 @@ public interface AccountApi {
 	 * @throws ServerError
 	 */
     public ApplicationResponse findApplication(ParameterMap parameters) throws ServerError;
+
+    /**
+     * Reads a {@link Service} in to the {@link ServiceResponse} by service id
+     *
+     * @param serviceId - required id of the service
+     * @return {@link ServiceResponse}
+     * @throws ServerError
+     */
+    public ServiceResponse readService(String serviceId) throws ServerError;
 }

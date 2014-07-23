@@ -1,34 +1,24 @@
 package threescale.v3.xml.response;
 
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ *
+ * @author Moncef
+ *
+ */
 @XmlRootElement(name = "account")
-public class Account {
+public class Account extends Response {
 
-	private String id;
 	private String state;
 
 	@XmlElement(name = "org_name")
 	private String orgName;
 
 	private List<Application> applications;
-
-	public boolean hasId() {
-		return isNotBlank(id);
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public String getState() {
 		return state;

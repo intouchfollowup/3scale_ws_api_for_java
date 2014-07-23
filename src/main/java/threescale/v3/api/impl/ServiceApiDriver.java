@@ -1,13 +1,13 @@
 package threescale.v3.api.impl;
 
-import static threescale.v3.api.ServiceApiConstants.HITS_PARAMETER;
-import static threescale.v3.api.ServiceApiConstants.SERVICE_ID_PARAMETER;
+import static threescale.v3.api.ParameterConstants.HITS_PARAMETER;
+import static threescale.v3.api.ParameterConstants.SERVICE_ID_PARAMETER;
+import static threescale.v3.api.ParameterConstants.TRANSACTIONS_ID_PARAMETER;
+import static threescale.v3.api.ParameterConstants.USAGE_PARAMETER;
 import static threescale.v3.api.ServiceApiConstants.TRANSACTIONS_AUTHORIZE_URL;
 import static threescale.v3.api.ServiceApiConstants.TRANSACTIONS_AUTHREP_URL;
-import static threescale.v3.api.ServiceApiConstants.TRANSACTIONS_ID_PARAMETER;
 import static threescale.v3.api.ServiceApiConstants.TRANSACTIONS_OAUTH_AUTHORIZE_URL;
 import static threescale.v3.api.ServiceApiConstants.TRANSACTIONS_URL;
-import static threescale.v3.api.ServiceApiConstants.USAGE_PARAMETER;
 import static threescale.v3.utils.ObjectUtils.isNotNull;
 import static threescale.v3.utils.ObjectUtils.isNull;
 import threescale.v3.api.AuthorizeResponse;

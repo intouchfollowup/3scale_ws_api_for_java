@@ -1,7 +1,5 @@
 package threescale.v3.xml.response;
 
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,8 +12,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import threescale.v3.xml.adapters.ElementMapAdapter;
 
 @XmlRootElement(name = "application")
-public class Application {
-	private String id;
+public class Application extends Response {
 	private Date createdAt;
 	private Date updatedAt;
 	private ApplicationState state;
@@ -30,25 +27,12 @@ public class Application {
 	private String description;
 	private Map<String, String> extraFields = new HashMap<String, String>();
 
-
-	public boolean hasId() {
-		return isNotBlank(id);
-	}
-
 	public boolean isActive() {
 		return ApplicationState.isLive(state);
 	}
 
 	public String getFirstKey() {
 		return ((keys != null) && !keys.isEmpty()) ? keys.get(0).getKey() : null;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	@XmlElement(name = "created_at")

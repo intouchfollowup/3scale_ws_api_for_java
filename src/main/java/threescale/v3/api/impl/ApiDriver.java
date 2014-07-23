@@ -1,10 +1,10 @@
 package threescale.v3.api.impl;
 
+import static threescale.v3.api.ParameterConstants.PROVIDER_KEY_PARAMETER;
 import static threescale.v3.api.ServiceApiConstants.DEFAULT_HOST;
 import static threescale.v3.api.ServiceApiConstants.DEFAULT_HOST_URL;
 import static threescale.v3.api.ServiceApiConstants.HTTPS_PROTOCAL;
 import static threescale.v3.api.ServiceApiConstants.HTTP_PROTOCAL;
-import static threescale.v3.api.ServiceApiConstants.PROVIDER_KEY_PARAMETER;
 import threescale.v3.api.HttpResponse;
 import threescale.v3.api.ParameterMap;
 import threescale.v3.api.ServerAccessor;
@@ -63,6 +63,10 @@ public class ApiDriver {
 		HttpResponse response = server.get(getFullHostUrl(url, parameterMap));
 		validateResponse(response);
 		return response;
+	}
+
+	protected HttpResponse get(String url) throws ServerError {
+		return get(url, new ParameterMap());
 	}
 
 	protected String getFullHostUrl(String url, ParameterMap parameterMap) {

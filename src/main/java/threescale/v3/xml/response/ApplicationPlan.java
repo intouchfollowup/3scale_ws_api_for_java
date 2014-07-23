@@ -2,8 +2,7 @@ package threescale.v3.xml.response;
 
 import javax.xml.bind.annotation.XmlElement;
 
-public class ApplicationPlan {
-	private String id;
+public class ApplicationPlan extends Response{
 	private String name;
 	private String type;
 	private String state;
@@ -13,14 +12,6 @@ public class ApplicationPlan {
 	private Float costPerMonth;
 	private String trialPeriodDays;
 	private String cancellationPeriod;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;
