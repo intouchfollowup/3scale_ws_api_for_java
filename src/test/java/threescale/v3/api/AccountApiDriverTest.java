@@ -3,6 +3,7 @@ package threescale.v3.api;
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
+import static threescale.v3.api.AccountApiConstants.ADMIN_API_SERVICES_APPLICATION_DELETE_URL;
 import static threescale.v3.api.AccountApiConstants.ADMIN_API_SERVICES_READ;
 import static threescale.v3.api.AccountApiConstants.ADMIN_API_SERVICES_UPDATE;
 import static threescale.v3.api.AccountApiConstants.HTTPS_PROTOCAL;
@@ -20,6 +21,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import threescale.v3.api.http.response.service.ServiceResponse;
+import threescale.v3.api.http.response.service.applicationplan.ApplicationPlanResponse;
 import threescale.v3.api.impl.AccountApiDriver;
 import threescale.v3.api.impl.ParameterEncoder;
 import threescale.v3.xml.bind.Marshaller;
@@ -78,6 +80,19 @@ public class AccountApiDriverTest {
 		assertThat(service.getName(), equalTo("Test New Api Name"));
     }
 
+    @Test
+    public void testDeleteAppliationPlan() throws ServerError {
+    	String applicationPlanId = "5555555555555";
+
+    	String url  =  buildMockGetUrl(format(ADMIN_API_SERVICES_APPLICATION_DELETE_URL, SERVICE_ID, applicationPlanId));
+    	mockHtmlServerDelete(url, 200, "");
+
+    	ApplicationPlanResponse response = accountApi.deleteApplicationPlan(SERVICE_ID, applicationPlanId);
+
+    	assertThat(response.isSuccess(), equalTo(true));
+    	assertThat(response.hasBody(), equalTo(false));
+    }
+
     private String buildMockUrl(String path) {
     	return new StringBuffer() //
     	.append(accountApi.getUseHttps() ? HTTPS_PROTOCAL : HTTP_PROTOCAL) //
@@ -101,6 +116,13 @@ public class AccountApiDriverTest {
             oneOf(htmlServer).get(url);
             will(returnValue(new HttpResponse(httpSatus, httpBody)));
         }});
+    }
+
+    private void mockHtmlServerDelete(final String url, final int httpSatus, final String httpBody) throws ServerError {
+    	context.checking(new Expectations() {{
+    		oneOf(htmlServer).delete(url);
+    		will(returnValue(new HttpResponse(httpSatus, httpBody)));
+    	}});
     }
 
     private void mockHtmlServerPut(final String url, final ParameterMap parameterMap, final int httpSatus, final String httpBody) throws ServerError {

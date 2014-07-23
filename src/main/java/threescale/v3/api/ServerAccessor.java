@@ -33,4 +33,13 @@ public interface ServerAccessor {
      * @throws ServerError If there are problems connection tp the server.
      */
 	public HttpResponse put(String url, String data) throws ServerError;
+
+    /**
+     * Perform an HTML DELETE with the provided URL
+     *
+     * @param url  The URl to contact
+     * @return Status and content as a HtmlResponse
+     * @throws ServerError If there are problems connection tp the server.
+     */
+	public HttpResponse delete(String url) throws ServerError;
 }

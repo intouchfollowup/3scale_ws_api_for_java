@@ -72,7 +72,10 @@ public abstract class AbstractResponse<T> {
     }
 
 	protected void unmarshallForSuccess() throws JAXBException {
-    	this.body = unmarshaller.unmarshall(marshallToClass, response.getBody());
+		String body = response.getBody();
+		if(isNotBlank(body)) {
+			this.body = unmarshaller.unmarshall(marshallToClass, body);
+		}
     }
 
 	/**
@@ -124,6 +127,10 @@ public abstract class AbstractResponse<T> {
 
 	public boolean hasErrors() {
 		return isNotNull(errors) && errors.hasErrors();
+	}
+
+	public boolean hasBody() {
+		return isNotNull(body);
 	}
 
 	public List<Error> getErrors() {

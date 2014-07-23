@@ -28,39 +28,8 @@ public class ServerAccessorDriver implements ServerAccessor {
      * @see ServerAccessor
      */
     @Override
-	public HttpResponse get(final String urlParams) throws ServerError {
-        HttpURLConnection connection = null;
-        URL url;
-
-        try {
-            url = new URL(urlParams);
-        } catch (MalformedURLException ex) {
-            throw new RuntimeException(ex);
-        }
-
-        try {
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setDoOutput(true);
-            connection.setReadTimeout(10000);
-            connection.setRequestProperty("Accept-Charset", "UTF-8");
-
-            connection.connect();
-
-
-            return new HttpResponse(connection.getResponseCode(), getBody(connection.getInputStream()));
-
-        } catch (IOException ex) {
-            try {
-                return new HttpResponse(connection.getResponseCode(), getBody(connection.getErrorStream()));
-            } catch (IOException e) {
-                throw new ServerError(e.getMessage());
-            }
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
+	public HttpResponse get(String urlParams) throws ServerError {
+        return invokeUrl(urlParams, "GET");
     }
 
     private String getBody(InputStream content) throws IOException {
@@ -87,7 +56,7 @@ public class ServerAccessorDriver implements ServerAccessor {
      */
     @Override
 	public HttpResponse post(final String urlParams,final String data) throws ServerError {
-        return post(urlParams, data, "POST");
+        return invokeUrl(urlParams, data, "POST");
     }
 
     /**
@@ -99,10 +68,15 @@ public class ServerAccessorDriver implements ServerAccessor {
      */
     @Override
     public HttpResponse put(final String urlParams,final String data) throws ServerError {
-    	return post(urlParams, data, "PUT");
+    	return invokeUrl(urlParams, data, "PUT");
     }
 
-	private HttpResponse post(final String urlParams,final String data, String requestMethod) throws ServerError {
+    @Override
+    public HttpResponse delete(String urlParams) throws ServerError {
+    	return invokeUrl(urlParams, "DELETE");
+    }
+
+	private HttpResponse invokeUrl(final String urlParams,final String data, String requestMethod) throws ServerError {
         HttpURLConnection connection = null;
         OutputStreamWriter wr;
         URL url;
@@ -141,4 +115,39 @@ public class ServerAccessorDriver implements ServerAccessor {
             }
         }
     }
+
+	private HttpResponse invokeUrl(final String urlParams, String requestMethod) throws ServerError {
+		HttpURLConnection connection = null;
+        URL url;
+
+        try {
+            url = new URL(urlParams);
+        } catch (MalformedURLException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        try {
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod(requestMethod);
+            connection.setDoOutput(true);
+            connection.setReadTimeout(10000);
+            connection.setRequestProperty("Accept-Charset", "UTF-8");
+
+            connection.connect();
+
+
+            return new HttpResponse(connection.getResponseCode(), getBody(connection.getInputStream()));
+
+        } catch (IOException ex) {
+            try {
+                return new HttpResponse(connection.getResponseCode(), getBody(connection.getErrorStream()));
+            } catch (IOException e) {
+                throw new ServerError(e.getMessage());
+            }
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+	}
 }

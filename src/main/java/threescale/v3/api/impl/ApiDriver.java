@@ -49,6 +49,19 @@ public class ApiDriver {
 		initHostURL();
 	}
 
+	protected HttpResponse get(String url, ParameterMap parameterMap) throws ServerError {
+		addProviderKey(parameterMap);
+
+		HttpResponse response = server.get(getFullHostUrl(url, parameterMap));
+		validateResponse(response);
+		return response;
+	}
+
+	protected HttpResponse get(String url) throws ServerError {
+		return get(url, new ParameterMap());
+	}
+
+
 	protected HttpResponse post(String url, ParameterMap parameterMap) throws ServerError {
 		addProviderKey(parameterMap);
 
@@ -65,16 +78,16 @@ public class ApiDriver {
 		return response;
 	}
 
-	protected HttpResponse get(String url, ParameterMap parameterMap) throws ServerError {
+	protected HttpResponse delete(String url, ParameterMap parameterMap) throws ServerError {
 		addProviderKey(parameterMap);
 
-		HttpResponse response = server.get(getFullHostUrl(url, parameterMap));
+		HttpResponse response = server.delete(getFullHostUrl(url, parameterMap));
 		validateResponse(response);
 		return response;
 	}
 
-	protected HttpResponse get(String url) throws ServerError {
-		return get(url, new ParameterMap());
+	protected HttpResponse delete(String url) throws ServerError {
+		return delete(url, new ParameterMap());
 	}
 
 	protected String getFullHostUrl(String url, ParameterMap parameterMap) {

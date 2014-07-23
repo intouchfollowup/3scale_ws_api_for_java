@@ -3,6 +3,8 @@ package threescale.v3.api;
 import threescale.v3.api.http.response.AccountResponse;
 import threescale.v3.api.http.response.ApplicationResponse;
 import threescale.v3.api.http.response.service.ServiceResponse;
+import threescale.v3.api.http.response.service.applicationplan.ApplicationPlanResponse;
+import threescale.v3.xml.response.ApplicationPlan;
 import threescale.v3.xml.response.service.Service;
 
 /**
@@ -53,4 +55,15 @@ public interface AccountApi {
      * @throws ServerError
      */
 	public ServiceResponse updateService(String serviceId, ParameterMap parameterMap) throws ServerError;
+
+	/**
+     * Delete an existing {@link ApplicationPlan} and returns it in {@link ApplicationPlanResponse}
+     * by service id and application plan id
+     *
+     * @param serviceId - required id of the service
+     * @param applicationPlanId - required id of the application plan
+     * @return {@link ServiceResponse}
+     * @throws ServerError
+     */
+	public ApplicationPlanResponse deleteApplicationPlan(String serviceId, String applicationPlanId) throws ServerError;
 }
