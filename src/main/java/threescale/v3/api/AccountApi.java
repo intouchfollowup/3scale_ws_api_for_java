@@ -62,8 +62,19 @@ public interface AccountApi {
      *
      * @param serviceId - required id of the service
      * @param applicationPlanId - required id of the application plan
-     * @return {@link ServiceResponse}
+     * @return {@link ApplicationPlanResponse}
      * @throws ServerError
      */
 	public ApplicationPlanResponse deleteApplicationPlan(String serviceId, String applicationPlanId) throws ServerError;
+
+    /**
+     * Reads a {@link ApplicationPlan} in to the {@link ApplicationPlanResponse}
+     * by service id and application plan id
+     *
+     * @param serviceId - required id of the service
+     * @param applicationPlanId - required id of the application plan
+     * @return {@link ApplicationPlanResponse}
+     * @throws ServerError
+     */
+	public ApplicationPlanResponse readApplicationPlan(String serviceId, String applicationPlanId) throws ServerError;
 }

@@ -4,6 +4,7 @@ import static java.lang.String.format;
 import static org.apache.commons.lang3.Validate.notNull;
 import static threescale.v3.api.AccountApiConstants.ADMIN_API_APPLICATIONS_FIND_URL;
 import static threescale.v3.api.AccountApiConstants.ADMIN_API_SERVICES_APPLICATION_DELETE_URL;
+import static threescale.v3.api.AccountApiConstants.ADMIN_API_SERVICES_APPLICATION_READ_URL;
 import static threescale.v3.api.AccountApiConstants.ADMIN_API_SERVICES_READ;
 import static threescale.v3.api.AccountApiConstants.ADMIN_API_SERVICES_UPDATE;
 import static threescale.v3.api.AccountApiConstants.ADMIN_API_SIGNUP_URL;
@@ -65,5 +66,13 @@ public class AccountApiDriver extends ApiDriver implements AccountApi{
 		notNull(applicationPlanId, APPLICATION_ID_REQUIRED_MESSAGE);
 
 		return new ApplicationPlanResponse(delete(format(ADMIN_API_SERVICES_APPLICATION_DELETE_URL, serviceId, applicationPlanId)));
+	}
+
+	@Override
+	public ApplicationPlanResponse readApplicationPlan(String serviceId, String applicationPlanId) throws ServerError {
+		notNull(serviceId, SERVICE_ID_REQUIRED_MESSAGE);
+		notNull(applicationPlanId, APPLICATION_ID_REQUIRED_MESSAGE);
+
+		return new ApplicationPlanResponse(get(format(ADMIN_API_SERVICES_APPLICATION_READ_URL, serviceId, applicationPlanId)));
 	}
 }

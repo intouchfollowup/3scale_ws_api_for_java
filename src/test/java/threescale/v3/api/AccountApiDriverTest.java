@@ -4,6 +4,7 @@ import static java.lang.String.format;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static threescale.v3.api.AccountApiConstants.ADMIN_API_SERVICES_APPLICATION_DELETE_URL;
+import static threescale.v3.api.AccountApiConstants.ADMIN_API_SERVICES_APPLICATION_READ_URL;
 import static threescale.v3.api.AccountApiConstants.ADMIN_API_SERVICES_READ;
 import static threescale.v3.api.AccountApiConstants.ADMIN_API_SERVICES_UPDATE;
 import static threescale.v3.api.AccountApiConstants.HTTPS_PROTOCAL;
@@ -11,6 +12,8 @@ import static threescale.v3.api.AccountApiConstants.HTTP_PROTOCAL;
 import static threescale.v3.api.ParameterConstants.PROVIDER_KEY_PARAMETER;
 import static threescale.v3.xml.bind.response.service.ServiceTest.SERVICE_ID;
 import static threescale.v3.xml.bind.response.service.ServiceTest.SERVICE_XML;
+import static threescale.v3.xml.response.ApplicationPlanTest.APPLCATION_PLAN_XML;
+import static threescale.v3.xml.response.ApplicationPlanTest.APPLICATON_PLAN_ID;
 
 import javax.xml.bind.JAXBException;
 
@@ -25,6 +28,7 @@ import threescale.v3.api.http.response.service.applicationplan.ApplicationPlanRe
 import threescale.v3.api.impl.AccountApiDriver;
 import threescale.v3.api.impl.ParameterEncoder;
 import threescale.v3.xml.bind.Marshaller;
+import threescale.v3.xml.response.ApplicationPlan;
 import threescale.v3.xml.response.service.Service;
 
 public class AccountApiDriverTest {
@@ -34,6 +38,8 @@ public class AccountApiDriverTest {
 
     private final String provider_key = "1234abcd";
     private final String host = "testurl.3scale.net";
+    private final String applicationPlanId = "5555555555555";
+
 
     private ServerAccessor htmlServer;
 	private AccountApiDriver accountApi;
@@ -81,8 +87,20 @@ public class AccountApiDriverTest {
     }
 
     @Test
+    public void testReadAppliationPlan() throws ServerError {
+
+    	String url = buildMockGetUrl(format(ADMIN_API_SERVICES_APPLICATION_READ_URL, SERVICE_ID, APPLICATON_PLAN_ID));
+    	mockHtmlServerGet(url, 201, APPLCATION_PLAN_XML);
+
+    	ApplicationPlanResponse response = accountApi.readApplicationPlan(SERVICE_ID, applicationPlanId);
+		ApplicationPlan applicationPlan = response.getBody();
+
+		assertThat(applicationPlan.getId(), equalTo(APPLICATON_PLAN_ID));
+		assertThat(applicationPlan.getServiceId(), equalTo(SERVICE_ID));
+    }
+
+    @Test
     public void testDeleteAppliationPlan() throws ServerError {
-    	String applicationPlanId = "5555555555555";
 
     	String url  =  buildMockGetUrl(format(ADMIN_API_SERVICES_APPLICATION_DELETE_URL, SERVICE_ID, applicationPlanId));
     	mockHtmlServerDelete(url, 200, "");

@@ -15,4 +15,9 @@ public class ApplicationPlanResponse extends AbstractResponse<ApplicationPlan>{
 	public ApplicationPlanResponse(HttpResponse response) throws ServerError {
 		super(response, ApplicationPlan.class);
 	}
+
+	@Override
+	protected boolean isSuccessResponse() {
+		return getStatus() == 201;
+	}
 }
