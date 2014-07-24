@@ -4,16 +4,20 @@ import static java.lang.String.format;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static threescale.v3.api.AccountApiConstants.APPLICATION_PLAN_DELETE_URL;
+import static threescale.v3.api.AccountApiConstants.APPLICATION_PLAN_LIST_URL;
 import static threescale.v3.api.AccountApiConstants.APPLICATION_PLAN_READ_URL;
 import static threescale.v3.api.AccountApiConstants.HTTPS_PROTOCAL;
 import static threescale.v3.api.AccountApiConstants.HTTP_PROTOCAL;
 import static threescale.v3.api.AccountApiConstants.SERVICES_READ_URL;
 import static threescale.v3.api.AccountApiConstants.SERVICES_UPDATE_URL;
 import static threescale.v3.api.ParameterConstants.PROVIDER_KEY_PARAMETER;
+import static threescale.v3.xml.elements.applicationplan.ApplicationPlanListTest.APPLCATION_PLANS_XML;
 import static threescale.v3.xml.elements.applicationplan.ApplicationPlanTest.APPLCATION_PLAN_XML;
 import static threescale.v3.xml.elements.applicationplan.ApplicationPlanTest.APPLICATON_PLAN_ID;
 import static threescale.v3.xml.elements.service.ServiceTest.SERVICE_ID;
 import static threescale.v3.xml.elements.service.ServiceTest.SERVICE_XML;
+
+import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
@@ -28,6 +32,7 @@ import threescale.v3.api.impl.AccountApiDriver;
 import threescale.v3.api.impl.ParameterEncoder;
 import threescale.v3.xml.bind.Marshaller;
 import threescale.v3.xml.elements.applicationplan.ApplicationPlan;
+import threescale.v3.xml.elements.applicationplan.ApplicationPlans;
 import threescale.v3.xml.elements.service.Service;
 
 public class AccountApiDriverTest {
@@ -93,6 +98,22 @@ public class AccountApiDriverTest {
 
     	Response<ApplicationPlan> response = accountApi.readApplicationPlan(SERVICE_ID, applicationPlanId);
 		ApplicationPlan applicationPlan = response.getBody();
+
+		assertThat(applicationPlan.getId(), equalTo(APPLICATON_PLAN_ID));
+		assertThat(applicationPlan.getServiceId(), equalTo(SERVICE_ID));
+    }
+
+    @Test
+    public void testListApplicationPlan() throws ServerError {
+
+    	String url = buildMockGetUrl(format(APPLICATION_PLAN_LIST_URL, SERVICE_ID));
+    	mockHtmlServerGet(url, 201, APPLCATION_PLANS_XML);
+
+    	Response<ApplicationPlans> response = accountApi.listApplicatonPlans(SERVICE_ID);
+    	ApplicationPlans applicationPlans = response.getBody();
+
+    	List<ApplicationPlan> list = applicationPlans.getApplicationPlans();
+    	ApplicationPlan applicationPlan = list.get(0);
 
 		assertThat(applicationPlan.getId(), equalTo(APPLICATON_PLAN_ID));
 		assertThat(applicationPlan.getServiceId(), equalTo(SERVICE_ID));

@@ -9,6 +9,7 @@ import static threescale.v3.api.AccountApiConstants.SERVICES_READ_URL;
 import static threescale.v3.api.AccountApiConstants.SERVICES_UPDATE_URL;
 import static threescale.v3.api.AccountApiConstants.SIGNUP_URL;
 import threescale.v3.api.AccountApi;
+import threescale.v3.api.AccountApiConstants;
 import threescale.v3.api.HttpResponse;
 import threescale.v3.api.ParameterMap;
 import threescale.v3.api.ServerError;
@@ -16,6 +17,7 @@ import threescale.v3.api.http.response.Response;
 import threescale.v3.xml.elements.account.Account;
 import threescale.v3.xml.elements.application.Application;
 import threescale.v3.xml.elements.applicationplan.ApplicationPlan;
+import threescale.v3.xml.elements.applicationplan.ApplicationPlans;
 import threescale.v3.xml.elements.service.Service;
 
 /**
@@ -65,15 +67,6 @@ public class AccountApiDriver extends ApiDriver implements AccountApi{
 	}
 
 	@Override
-	public Response<ApplicationPlan> deleteApplicationPlan(String serviceId, String applicationPlanId) throws ServerError {
-		notNull(serviceId, SERVICE_ID_REQUIRED_MESSAGE);
-		notNull(applicationPlanId, APPLICATION_ID_REQUIRED_MESSAGE);
-
-		HttpResponse httpResponse = delete(format(APPLICATION_PLAN_DELETE_URL, serviceId, applicationPlanId));
-		return createResponse(httpResponse, ApplicationPlan.class);
-	}
-
-	@Override
 	public Response<ApplicationPlan> readApplicationPlan(String serviceId, String applicationPlanId) throws ServerError {
 		notNull(serviceId, SERVICE_ID_REQUIRED_MESSAGE);
 		notNull(applicationPlanId, APPLICATION_ID_REQUIRED_MESSAGE);
@@ -82,7 +75,25 @@ public class AccountApiDriver extends ApiDriver implements AccountApi{
 		return createResponse(httpResponse, ApplicationPlan.class);
 	}
 
+	@Override
+	public Response<ApplicationPlans> listApplicatonPlans(String serviceId) throws ServerError {
+		notNull(serviceId, SERVICE_ID_REQUIRED_MESSAGE);
+
+		HttpResponse httpResponse = get(format(AccountApiConstants.APPLICATION_PLAN_LIST_URL, serviceId));
+		return createResponse(httpResponse, ApplicationPlans.class);
+	}
+
+	@Override
+	public Response<ApplicationPlan> deleteApplicationPlan(String serviceId, String applicationPlanId) throws ServerError {
+		notNull(serviceId, SERVICE_ID_REQUIRED_MESSAGE);
+		notNull(applicationPlanId, APPLICATION_ID_REQUIRED_MESSAGE);
+
+		HttpResponse httpResponse = delete(format(APPLICATION_PLAN_DELETE_URL, serviceId, applicationPlanId));
+		return createResponse(httpResponse, ApplicationPlan.class);
+	}
+
 	private <T> Response<T> createResponse(HttpResponse httpResponse, Class<T> clazz) throws ServerError {
 		return new Response<T>(httpResponse, clazz);
 	}
+
 }

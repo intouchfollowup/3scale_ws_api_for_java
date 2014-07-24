@@ -4,6 +4,7 @@ import threescale.v3.api.http.response.Response;
 import threescale.v3.xml.elements.account.Account;
 import threescale.v3.xml.elements.application.Application;
 import threescale.v3.xml.elements.applicationplan.ApplicationPlan;
+import threescale.v3.xml.elements.applicationplan.ApplicationPlans;
 import threescale.v3.xml.elements.service.Service;
 
 /**
@@ -29,7 +30,8 @@ public interface AccountApi {
     public Response<Account>  signup(ParameterMap parameters) throws ServerError;
 
     /**
-     * Finds an application by keys used on the integration of your API and 3scale's Service Management API or by id (no need to know the account_id).
+     * Finds an application by keys used on the integration of your API and
+     * 3scale's Service Management API or by id (no need to know the account_id).
      * @param parameters - {@link ParameterMap}
      * @return {@link Response}
 	 *
@@ -38,7 +40,7 @@ public interface AccountApi {
     public Response<Application>  findApplication(ParameterMap parameters) throws ServerError;
 
     /**
-     * Reads a {@link Service} in to the {@link ServiceResponse} by service id
+     * Reads a {@link Service} in to the {@link Response} by service id
      *
      * @param serviceId - required id of the service
      * @return {@link Response}
@@ -47,7 +49,7 @@ public interface AccountApi {
     public Response<Service> readService(String serviceId) throws ServerError;
 
     /**
-     * Updates an existing {@link Service} and returns it in {@link ServiceResponse} by service id
+     * Updates an existing {@link Service} and returns it in {@link Response} by service id
      *
      * @param serviceId - required id of the service
      * @return {@link Response}
@@ -55,8 +57,29 @@ public interface AccountApi {
      */
 	public Response<Service> updateService(String serviceId, ParameterMap parameterMap) throws ServerError;
 
+    /**
+     * Reads a {@link ApplicationPlan} in to the {@link Response}
+     * by service id and application plan id
+     *
+     * @param serviceId - required id of the service
+     * @param applicationPlanId - required id of the application plan
+     * @return {@link Response}
+     * @throws ServerError
+     */
+	public Response<ApplicationPlan> readApplicationPlan(String serviceId, String applicationPlanId) throws ServerError;
+
 	/**
-     * Delete an existing {@link ApplicationPlan} and returns it in {@link ApplicationPlanResponse}
+     * Retrieves {@link ApplicationPlans} in to the {@link Response}
+     * by service id
+     *
+     * @param serviceId - required id of the service
+     * @return {@link Response}
+     * @throws ServerError
+     */
+	public Response<ApplicationPlans> listApplicatonPlans(String serviceId) throws ServerError;
+
+	/**
+     * Delete an existing {@link ApplicationPlan} and returns it in {@link Response}
      * by service id and application plan id
      *
      * @param serviceId - required id of the service
@@ -66,14 +89,4 @@ public interface AccountApi {
      */
 	public Response<ApplicationPlan> deleteApplicationPlan(String serviceId, String applicationPlanId) throws ServerError;
 
-    /**
-     * Reads a {@link ApplicationPlan} in to the {@link ApplicationPlanResponse}
-     * by service id and application plan id
-     *
-     * @param serviceId - required id of the service
-     * @param applicationPlanId - required id of the application plan
-     * @return {@link Response}
-     * @throws ServerError
-     */
-	public Response<ApplicationPlan> readApplicationPlan(String serviceId, String applicationPlanId) throws ServerError;
 }
