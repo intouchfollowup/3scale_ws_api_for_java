@@ -1,15 +1,16 @@
-package threescale.v3.xml.response.applicationplan;
+package threescale.v3.xml.elements.applicationplan;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-import static threescale.v3.xml.response.service.ServiceTest.SERVICE_ID;
+import static threescale.v3.xml.elements.service.ServiceTest.SERVICE_ID;
 
 import javax.xml.bind.JAXBException;
 
 import org.junit.Test;
 
 import threescale.v3.xml.bind.Unmarshaller;
+import threescale.v3.xml.elements.applicationplan.ApplicationPlan;
 
 public class ApplicationPlanTest {
 

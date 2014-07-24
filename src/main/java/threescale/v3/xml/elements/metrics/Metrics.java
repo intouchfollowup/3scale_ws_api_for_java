@@ -1,4 +1,4 @@
-package threescale.v3.xml.response.metrics;
+package threescale.v3.xml.elements.metrics;
 
 import java.util.ArrayList;
 import java.util.List;

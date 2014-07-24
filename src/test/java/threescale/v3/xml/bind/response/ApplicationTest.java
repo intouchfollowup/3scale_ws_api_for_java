@@ -16,9 +16,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import threescale.v3.xml.bind.Unmarshaller;
-import threescale.v3.xml.response.application.Application;
-import threescale.v3.xml.response.application.ApplicationKey;
-import threescale.v3.xml.response.application.ApplicationState;
+import threescale.v3.xml.elements.application.Application;
+import threescale.v3.xml.elements.application.ApplicationKey;
+import threescale.v3.xml.elements.application.ApplicationState;
 
 
 /**

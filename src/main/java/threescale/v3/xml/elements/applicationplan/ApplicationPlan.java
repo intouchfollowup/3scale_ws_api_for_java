@@ -1,12 +1,12 @@
-package threescale.v3.xml.response.applicationplan;
+package threescale.v3.xml.elements.applicationplan;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import threescale.v3.xml.response.Response;
+import threescale.v3.xml.elements.Element;
 
 @XmlRootElement(name = "plan")
-public class ApplicationPlan extends Response{
+public class ApplicationPlan extends Element{
 	private String name;
 	private String type;
 	private String state;

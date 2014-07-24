@@ -12,8 +12,8 @@ import javax.xml.bind.JAXBException;
 import threescale.v3.api.HttpResponse;
 import threescale.v3.api.ServerError;
 import threescale.v3.xml.bind.Unmarshaller;
-import threescale.v3.xml.response.error.Error;
-import threescale.v3.xml.response.error.Errors;
+import threescale.v3.xml.elements.error.Error;
+import threescale.v3.xml.elements.error.Errors;
 
 /**
  * Abstract 3scale response object wrapping around {@link HttpResponse}

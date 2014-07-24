@@ -1,15 +1,15 @@
-package threescale.v3.xml.response.metrics;
+package threescale.v3.xml.elements.metrics;
 
 import javax.xml.bind.annotation.XmlElement;
 
-import threescale.v3.xml.response.Response;
+import threescale.v3.xml.elements.Element;
 
 /**
  *
  * @author Moncef
  *
  */
-public class Metric extends Response {
+public class Metric extends Element {
 
 	private String name;
 	private String systemName;

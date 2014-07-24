@@ -1,13 +1,13 @@
-package threescale.v3.xml.response.service;
+package threescale.v3.xml.elements.service;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import threescale.v3.xml.response.Response;
-import threescale.v3.xml.response.metrics.Metrics;
+import threescale.v3.xml.elements.Element;
+import threescale.v3.xml.elements.metrics.Metrics;
 
 @XmlRootElement(name = "service")
-public class Service extends Response {
+public class Service extends Element {
 
 	private String accountId;
 	private String name;

@@ -1,4 +1,4 @@
-package threescale.v3.xml.response.error;
+package threescale.v3.xml.elements.error;
 
 import static threescale.v3.utils.ObjectUtils.isNotNull;
 

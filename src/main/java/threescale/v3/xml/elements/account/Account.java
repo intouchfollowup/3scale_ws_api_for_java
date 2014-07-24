@@ -1,12 +1,12 @@
-package threescale.v3.xml.response.account;
+package threescale.v3.xml.elements.account;
 
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import threescale.v3.xml.response.Response;
-import threescale.v3.xml.response.application.Application;
+import threescale.v3.xml.elements.Element;
+import threescale.v3.xml.elements.application.Application;
 
 /**
  *
@@ -14,7 +14,7 @@ import threescale.v3.xml.response.application.Application;
  *
  */
 @XmlRootElement(name = "account")
-public class Account extends Response {
+public class Account extends Element {
 
 	private String state;
 

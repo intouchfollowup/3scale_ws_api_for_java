@@ -1,4 +1,4 @@
-package threescale.v3.xml.response.service;
+package threescale.v3.xml.elements.service;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -11,9 +11,9 @@ import javax.xml.bind.JAXBException;
 import org.junit.Test;
 
 import threescale.v3.xml.bind.Unmarshaller;
-import threescale.v3.xml.response.metrics.Metric;
-import threescale.v3.xml.response.metrics.Metrics;
-import threescale.v3.xml.response.service.Service;
+import threescale.v3.xml.elements.metrics.Metric;
+import threescale.v3.xml.elements.metrics.Metrics;
+import threescale.v3.xml.elements.service.Service;
 
 /**
  *

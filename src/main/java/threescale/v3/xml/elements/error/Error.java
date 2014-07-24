@@ -1,4 +1,4 @@
-package threescale.v3.xml.response.error;
+package threescale.v3.xml.elements.error;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

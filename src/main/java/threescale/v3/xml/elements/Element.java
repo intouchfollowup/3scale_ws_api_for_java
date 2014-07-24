@@ -1,14 +1,14 @@
-package threescale.v3.xml.response;
+package threescale.v3.xml.elements;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 /**
- * A parent object for most Responses
+ * A parent object for most elements that are the same thing
  *
  * @author Moncef
  *
  */
-public class Response {
+public class Element {
 
 	private String id;
 

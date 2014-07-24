@@ -1,4 +1,4 @@
-package threescale.v3.xml.response.application;
+package threescale.v3.xml.elements.application;
 
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
