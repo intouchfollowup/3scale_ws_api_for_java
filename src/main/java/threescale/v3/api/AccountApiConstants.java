@@ -11,10 +11,10 @@ public class AccountApiConstants {
 	public static final String HTTPS_PROTOCAL = "https://";
 
 	// api location uri's
-	public static final String ADMIN_API_SIGNUP_URL = "/admin/api/signup.xml";
-	public static final String ADMIN_API_APPLICATIONS_FIND_URL = "/admin/api/applications/find.xml";
-	public static final String ADMIN_API_SERVICES_READ = "/admin/api/services/%s.xml";
-	public static final String ADMIN_API_SERVICES_UPDATE = "/admin/api/services/%s.xml";
-	public static final String ADMIN_API_SERVICES_APPLICATION_READ_URL = "/admin/api/services/%s/application_plans/%s.xml";
-	public static final String ADMIN_API_SERVICES_APPLICATION_DELETE_URL = "/admin/api/services/%s/application_plans/%s.xml";
+	public static final String SIGNUP_URL = "/admin/api/signup.xml";
+	public static final String APPLICATIONS_FIND_URL = "/admin/api/applications/find.xml";
+	public static final String SERVICES_READ_URL = "/admin/api/services/%s.xml";
+	public static final String SERVICES_UPDATE_URL = "/admin/api/services/%s.xml";
+	public static final String APPLICATION_PLAN_READ_URL = "/admin/api/services/%s/application_plans/%s.xml";
+	public static final String APPLICATION_PLAN_DELETE_URL = "/admin/api/services/%s/application_plans/%s.xml";
 }

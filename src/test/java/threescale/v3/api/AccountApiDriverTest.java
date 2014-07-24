@@ -3,10 +3,10 @@ package threescale.v3.api;
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
-import static threescale.v3.api.AccountApiConstants.ADMIN_API_SERVICES_APPLICATION_DELETE_URL;
-import static threescale.v3.api.AccountApiConstants.ADMIN_API_SERVICES_APPLICATION_READ_URL;
-import static threescale.v3.api.AccountApiConstants.ADMIN_API_SERVICES_READ;
-import static threescale.v3.api.AccountApiConstants.ADMIN_API_SERVICES_UPDATE;
+import static threescale.v3.api.AccountApiConstants.APPLICATION_PLAN_DELETE_URL;
+import static threescale.v3.api.AccountApiConstants.APPLICATION_PLAN_READ_URL;
+import static threescale.v3.api.AccountApiConstants.SERVICES_READ_URL;
+import static threescale.v3.api.AccountApiConstants.SERVICES_UPDATE_URL;
 import static threescale.v3.api.AccountApiConstants.HTTPS_PROTOCAL;
 import static threescale.v3.api.AccountApiConstants.HTTP_PROTOCAL;
 import static threescale.v3.api.ParameterConstants.PROVIDER_KEY_PARAMETER;
@@ -54,7 +54,7 @@ public class AccountApiDriverTest {
 
     @Test
     public void testReadService() throws ServerError {
-    	String url  =  buildMockGetUrl(format(ADMIN_API_SERVICES_READ, SERVICE_ID));
+    	String url  =  buildMockGetUrl(format(SERVICES_READ_URL, SERVICE_ID));
     	mockHtmlServerGet(url, 200, SERVICE_XML);
 
     	ServiceResponse serviceResponse = accountApi.readService(SERVICE_ID);
@@ -67,7 +67,7 @@ public class AccountApiDriverTest {
     public void testUpdateService() throws ServerError, JAXBException {
     	ParameterMap parameterMap = new ParameterMap();
 
-    	String url  =  buildMockUrl(format(ADMIN_API_SERVICES_UPDATE, SERVICE_ID));
+    	String url  =  buildMockUrl(format(SERVICES_UPDATE_URL, SERVICE_ID));
     	mockHtmlServerPut(url, parameterMap, 200, SERVICE_XML);
 
     	ServiceResponse serviceResponse = accountApi.updateService(SERVICE_ID, parameterMap);
@@ -89,7 +89,7 @@ public class AccountApiDriverTest {
     @Test
     public void testReadAppliationPlan() throws ServerError {
 
-    	String url = buildMockGetUrl(format(ADMIN_API_SERVICES_APPLICATION_READ_URL, SERVICE_ID, APPLICATON_PLAN_ID));
+    	String url = buildMockGetUrl(format(APPLICATION_PLAN_READ_URL, SERVICE_ID, APPLICATON_PLAN_ID));
     	mockHtmlServerGet(url, 201, APPLCATION_PLAN_XML);
 
     	ApplicationPlanResponse response = accountApi.readApplicationPlan(SERVICE_ID, applicationPlanId);
@@ -102,7 +102,7 @@ public class AccountApiDriverTest {
     @Test
     public void testDeleteAppliationPlan() throws ServerError {
 
-    	String url  =  buildMockGetUrl(format(ADMIN_API_SERVICES_APPLICATION_DELETE_URL, SERVICE_ID, applicationPlanId));
+    	String url  =  buildMockGetUrl(format(APPLICATION_PLAN_DELETE_URL, SERVICE_ID, applicationPlanId));
     	mockHtmlServerDelete(url, 200, "");
 
     	ApplicationPlanResponse response = accountApi.deleteApplicationPlan(SERVICE_ID, applicationPlanId);

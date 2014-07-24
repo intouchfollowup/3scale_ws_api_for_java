@@ -2,12 +2,12 @@ package threescale.v3.api.impl;
 
 import static java.lang.String.format;
 import static org.apache.commons.lang3.Validate.notNull;
-import static threescale.v3.api.AccountApiConstants.ADMIN_API_APPLICATIONS_FIND_URL;
-import static threescale.v3.api.AccountApiConstants.ADMIN_API_SERVICES_APPLICATION_DELETE_URL;
-import static threescale.v3.api.AccountApiConstants.ADMIN_API_SERVICES_APPLICATION_READ_URL;
-import static threescale.v3.api.AccountApiConstants.ADMIN_API_SERVICES_READ;
-import static threescale.v3.api.AccountApiConstants.ADMIN_API_SERVICES_UPDATE;
-import static threescale.v3.api.AccountApiConstants.ADMIN_API_SIGNUP_URL;
+import static threescale.v3.api.AccountApiConstants.APPLICATIONS_FIND_URL;
+import static threescale.v3.api.AccountApiConstants.APPLICATION_PLAN_DELETE_URL;
+import static threescale.v3.api.AccountApiConstants.APPLICATION_PLAN_READ_URL;
+import static threescale.v3.api.AccountApiConstants.SERVICES_READ_URL;
+import static threescale.v3.api.AccountApiConstants.SERVICES_UPDATE_URL;
+import static threescale.v3.api.AccountApiConstants.SIGNUP_URL;
 import threescale.v3.api.AccountApi;
 import threescale.v3.api.ParameterMap;
 import threescale.v3.api.ServerError;
@@ -38,26 +38,26 @@ public class AccountApiDriver extends ApiDriver implements AccountApi{
 
 	@Override
 	public AccountResponse signup(ParameterMap parameters) throws ServerError {
-		return new AccountResponse(post(ADMIN_API_SIGNUP_URL, parameters));
+		return new AccountResponse(post(SIGNUP_URL, parameters));
 	}
 
 	@Override
 	public ApplicationResponse findApplication(ParameterMap parameters) throws ServerError {
-		return new ApplicationResponse(get(ADMIN_API_APPLICATIONS_FIND_URL, parameters));
+		return new ApplicationResponse(get(APPLICATIONS_FIND_URL, parameters));
 	}
 
 	@Override
 	public ServiceResponse readService(String serviceId) throws ServerError {
 		notNull(serviceId, SERVICE_ID_REQUIRED_MESSAGE);
 
-		return new ServiceResponse(get(format(ADMIN_API_SERVICES_READ, serviceId)));
+		return new ServiceResponse(get(format(SERVICES_READ_URL, serviceId)));
 	}
 
 	@Override
 	public ServiceResponse updateService(String serviceId, ParameterMap parameterMap) throws ServerError {
 		notNull(serviceId, SERVICE_ID_REQUIRED_MESSAGE);
 
-		return new ServiceResponse(put(format(ADMIN_API_SERVICES_UPDATE, serviceId), parameterMap));
+		return new ServiceResponse(put(format(SERVICES_UPDATE_URL, serviceId), parameterMap));
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class AccountApiDriver extends ApiDriver implements AccountApi{
 		notNull(serviceId, SERVICE_ID_REQUIRED_MESSAGE);
 		notNull(applicationPlanId, APPLICATION_ID_REQUIRED_MESSAGE);
 
-		return new ApplicationPlanResponse(delete(format(ADMIN_API_SERVICES_APPLICATION_DELETE_URL, serviceId, applicationPlanId)));
+		return new ApplicationPlanResponse(delete(format(APPLICATION_PLAN_DELETE_URL, serviceId, applicationPlanId)));
 	}
 
 	@Override
@@ -73,6 +73,6 @@ public class AccountApiDriver extends ApiDriver implements AccountApi{
 		notNull(serviceId, SERVICE_ID_REQUIRED_MESSAGE);
 		notNull(applicationPlanId, APPLICATION_ID_REQUIRED_MESSAGE);
 
-		return new ApplicationPlanResponse(get(format(ADMIN_API_SERVICES_APPLICATION_READ_URL, serviceId, applicationPlanId)));
+		return new ApplicationPlanResponse(get(format(APPLICATION_PLAN_READ_URL, serviceId, applicationPlanId)));
 	}
 }
