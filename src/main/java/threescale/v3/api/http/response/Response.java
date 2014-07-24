@@ -21,7 +21,7 @@ import threescale.v3.xml.elements.error.Errors;
  * @author Moncef
  *
  */
-public abstract class AbstractResponse<T> {
+public class Response<T> {
 
 	private boolean success;
 	private Errors errors;
@@ -31,12 +31,12 @@ public abstract class AbstractResponse<T> {
 	private T body;
 
 	/**
-     * Create a {@link AbstractResponse} from an HTML POST
+     * Create a {@link Response} from an HTML POST
      *
      * @param response - {@link HttpResponse}
      * @throws ServerError
      */
-    public AbstractResponse(HttpResponse response, Class<T> marshallToClass) throws ServerError {
+    public Response(HttpResponse response, Class<T> marshallToClass) throws ServerError {
         this.response = response;
 		this.marshallToClass = marshallToClass;
     	this.success = isSuccessResponse();
@@ -44,13 +44,15 @@ public abstract class AbstractResponse<T> {
     }
 
     /**
-     * Test whether the {@link HttpResponse#getStatus()} is successful response. By default a 200 is
-     * considered a success, to add additional success statuses override this method.
+     * Test whether the {@link HttpResponse#getStatus()} is successful response. By default any
+     * status in between the range of 200 and 299 is considered a success, to add additional
+     * success statuses override this method.
      *
      * @return true if considered a successful response
      */
     protected boolean isSuccessResponse() {
-    	return getStatus() == 200;
+    	int status = getStatus();
+    	return (status >= 200 && status <= 299);
     }
 
     /**

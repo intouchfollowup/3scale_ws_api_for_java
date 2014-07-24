@@ -9,12 +9,14 @@ import static threescale.v3.api.AccountApiConstants.SERVICES_READ_URL;
 import static threescale.v3.api.AccountApiConstants.SERVICES_UPDATE_URL;
 import static threescale.v3.api.AccountApiConstants.SIGNUP_URL;
 import threescale.v3.api.AccountApi;
+import threescale.v3.api.HttpResponse;
 import threescale.v3.api.ParameterMap;
 import threescale.v3.api.ServerError;
-import threescale.v3.api.http.response.AccountResponse;
-import threescale.v3.api.http.response.ApplicationResponse;
-import threescale.v3.api.http.response.service.ServiceResponse;
-import threescale.v3.api.http.response.service.applicationplan.ApplicationPlanResponse;
+import threescale.v3.api.http.response.Response;
+import threescale.v3.xml.elements.account.Account;
+import threescale.v3.xml.elements.application.Application;
+import threescale.v3.xml.elements.applicationplan.ApplicationPlan;
+import threescale.v3.xml.elements.service.Service;
 
 /**
  * {@link AccountApi} implementation that requires the providing of a host, i.e. the
@@ -37,42 +39,50 @@ public class AccountApiDriver extends ApiDriver implements AccountApi{
 	}
 
 	@Override
-	public AccountResponse signup(ParameterMap parameters) throws ServerError {
-		return new AccountResponse(post(SIGNUP_URL, parameters));
+	public Response<Account> signup(ParameterMap parameters) throws ServerError {
+		return createResponse(post(SIGNUP_URL, parameters), Account.class);
 	}
 
 	@Override
-	public ApplicationResponse findApplication(ParameterMap parameters) throws ServerError {
-		return new ApplicationResponse(get(APPLICATIONS_FIND_URL, parameters));
+	public Response<Application> findApplication(ParameterMap parameters) throws ServerError {
+		return createResponse(get(APPLICATIONS_FIND_URL, parameters), Application.class);
 	}
 
 	@Override
-	public ServiceResponse readService(String serviceId) throws ServerError {
+	public Response<Service>  readService(String serviceId) throws ServerError {
 		notNull(serviceId, SERVICE_ID_REQUIRED_MESSAGE);
 
-		return new ServiceResponse(get(format(SERVICES_READ_URL, serviceId)));
+		HttpResponse httpResponse = get(format(SERVICES_READ_URL, serviceId));
+		return createResponse(httpResponse, Service.class);
 	}
 
 	@Override
-	public ServiceResponse updateService(String serviceId, ParameterMap parameterMap) throws ServerError {
+	public Response<Service> updateService(String serviceId, ParameterMap parameterMap) throws ServerError {
 		notNull(serviceId, SERVICE_ID_REQUIRED_MESSAGE);
 
-		return new ServiceResponse(put(format(SERVICES_UPDATE_URL, serviceId), parameterMap));
+		HttpResponse httpResponse = put(format(SERVICES_UPDATE_URL, serviceId), parameterMap);
+		return createResponse(httpResponse, Service.class);
 	}
 
 	@Override
-	public ApplicationPlanResponse deleteApplicationPlan(String serviceId, String applicationPlanId) throws ServerError {
-		notNull(serviceId, SERVICE_ID_REQUIRED_MESSAGE);
-		notNull(applicationPlanId, APPLICATION_ID_REQUIRED_MESSAGE);
-
-		return new ApplicationPlanResponse(delete(format(APPLICATION_PLAN_DELETE_URL, serviceId, applicationPlanId)));
-	}
-
-	@Override
-	public ApplicationPlanResponse readApplicationPlan(String serviceId, String applicationPlanId) throws ServerError {
+	public Response<ApplicationPlan> deleteApplicationPlan(String serviceId, String applicationPlanId) throws ServerError {
 		notNull(serviceId, SERVICE_ID_REQUIRED_MESSAGE);
 		notNull(applicationPlanId, APPLICATION_ID_REQUIRED_MESSAGE);
 
-		return new ApplicationPlanResponse(get(format(APPLICATION_PLAN_READ_URL, serviceId, applicationPlanId)));
+		HttpResponse httpResponse = delete(format(APPLICATION_PLAN_DELETE_URL, serviceId, applicationPlanId));
+		return createResponse(httpResponse, ApplicationPlan.class);
+	}
+
+	@Override
+	public Response<ApplicationPlan> readApplicationPlan(String serviceId, String applicationPlanId) throws ServerError {
+		notNull(serviceId, SERVICE_ID_REQUIRED_MESSAGE);
+		notNull(applicationPlanId, APPLICATION_ID_REQUIRED_MESSAGE);
+
+		HttpResponse httpResponse = get(format(APPLICATION_PLAN_READ_URL, serviceId, applicationPlanId));
+		return createResponse(httpResponse, ApplicationPlan.class);
+	}
+
+	private <T> Response<T> createResponse(HttpResponse httpResponse, Class<T> clazz) throws ServerError {
+		return new Response<T>(httpResponse, clazz);
 	}
 }

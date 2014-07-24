@@ -5,10 +5,10 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static threescale.v3.api.AccountApiConstants.APPLICATION_PLAN_DELETE_URL;
 import static threescale.v3.api.AccountApiConstants.APPLICATION_PLAN_READ_URL;
-import static threescale.v3.api.AccountApiConstants.SERVICES_READ_URL;
-import static threescale.v3.api.AccountApiConstants.SERVICES_UPDATE_URL;
 import static threescale.v3.api.AccountApiConstants.HTTPS_PROTOCAL;
 import static threescale.v3.api.AccountApiConstants.HTTP_PROTOCAL;
+import static threescale.v3.api.AccountApiConstants.SERVICES_READ_URL;
+import static threescale.v3.api.AccountApiConstants.SERVICES_UPDATE_URL;
 import static threescale.v3.api.ParameterConstants.PROVIDER_KEY_PARAMETER;
 import static threescale.v3.xml.elements.applicationplan.ApplicationPlanTest.APPLCATION_PLAN_XML;
 import static threescale.v3.xml.elements.applicationplan.ApplicationPlanTest.APPLICATON_PLAN_ID;
@@ -23,8 +23,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import threescale.v3.api.http.response.service.ServiceResponse;
-import threescale.v3.api.http.response.service.applicationplan.ApplicationPlanResponse;
+import threescale.v3.api.http.response.Response;
 import threescale.v3.api.impl.AccountApiDriver;
 import threescale.v3.api.impl.ParameterEncoder;
 import threescale.v3.xml.bind.Marshaller;
@@ -57,8 +56,8 @@ public class AccountApiDriverTest {
     	String url  =  buildMockGetUrl(format(SERVICES_READ_URL, SERVICE_ID));
     	mockHtmlServerGet(url, 200, SERVICE_XML);
 
-    	ServiceResponse serviceResponse = accountApi.readService(SERVICE_ID);
-		Service service = serviceResponse.getBody();
+    	Response<Service> response = accountApi.readService(SERVICE_ID);
+		Service service = response.getBody();
 
 		assertThat(service.getId(), equalTo(SERVICE_ID));
     }
@@ -70,8 +69,8 @@ public class AccountApiDriverTest {
     	String url  =  buildMockUrl(format(SERVICES_UPDATE_URL, SERVICE_ID));
     	mockHtmlServerPut(url, parameterMap, 200, SERVICE_XML);
 
-    	ServiceResponse serviceResponse = accountApi.updateService(SERVICE_ID, parameterMap);
-		Service service = serviceResponse.getBody();
+    	Response<Service> response =  accountApi.updateService(SERVICE_ID, parameterMap);
+		Service service = response.getBody();
 
 		assertThat(service.getId(), equalTo(SERVICE_ID));
 
@@ -79,8 +78,8 @@ public class AccountApiDriverTest {
 		parameterMap.add("name", service.getName());
 		mockHtmlServerPut(url, parameterMap, 200, marshaller.marshall(service));
 
-		serviceResponse = accountApi.updateService(SERVICE_ID, parameterMap);
-		service = serviceResponse.getBody();
+		response = accountApi.updateService(SERVICE_ID, parameterMap);
+		service = response.getBody();
 
 		assertThat(service.getId(), equalTo(SERVICE_ID));
 		assertThat(service.getName(), equalTo("Test New Api Name"));
@@ -92,7 +91,7 @@ public class AccountApiDriverTest {
     	String url = buildMockGetUrl(format(APPLICATION_PLAN_READ_URL, SERVICE_ID, APPLICATON_PLAN_ID));
     	mockHtmlServerGet(url, 201, APPLCATION_PLAN_XML);
 
-    	ApplicationPlanResponse response = accountApi.readApplicationPlan(SERVICE_ID, applicationPlanId);
+    	Response<ApplicationPlan> response = accountApi.readApplicationPlan(SERVICE_ID, applicationPlanId);
 		ApplicationPlan applicationPlan = response.getBody();
 
 		assertThat(applicationPlan.getId(), equalTo(APPLICATON_PLAN_ID));
@@ -105,7 +104,7 @@ public class AccountApiDriverTest {
     	String url  =  buildMockGetUrl(format(APPLICATION_PLAN_DELETE_URL, SERVICE_ID, applicationPlanId));
     	mockHtmlServerDelete(url, 200, "");
 
-    	ApplicationPlanResponse response = accountApi.deleteApplicationPlan(SERVICE_ID, applicationPlanId);
+    	Response<ApplicationPlan> response = accountApi.deleteApplicationPlan(SERVICE_ID, applicationPlanId);
 
     	assertThat(response.isSuccess(), equalTo(true));
     	assertThat(response.hasBody(), equalTo(false));

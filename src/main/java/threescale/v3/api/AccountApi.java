@@ -1,9 +1,8 @@
 package threescale.v3.api;
 
-import threescale.v3.api.http.response.AccountResponse;
-import threescale.v3.api.http.response.ApplicationResponse;
-import threescale.v3.api.http.response.service.ServiceResponse;
-import threescale.v3.api.http.response.service.applicationplan.ApplicationPlanResponse;
+import threescale.v3.api.http.response.Response;
+import threescale.v3.xml.elements.account.Account;
+import threescale.v3.xml.elements.application.Application;
 import threescale.v3.xml.elements.applicationplan.ApplicationPlan;
 import threescale.v3.xml.elements.service.Service;
 
@@ -23,38 +22,38 @@ public interface AccountApi {
 	 * parameters that you define in Fields Definition on your Admin Portal.
 	 *
 	 * @param parameters - {@link ParameterMap}
-	 * @return {@link AccountResponse}
+     * @return {@link Response}
 	 *
 	 * @throws ServerError
 	 */
-    public AccountResponse signup(ParameterMap parameters) throws ServerError;
+    public Response<Account>  signup(ParameterMap parameters) throws ServerError;
 
     /**
      * Finds an application by keys used on the integration of your API and 3scale's Service Management API or by id (no need to know the account_id).
      * @param parameters - {@link ParameterMap}
-	 * @return {@link AccountResponse}
+     * @return {@link Response}
 	 *
 	 * @throws ServerError
 	 */
-    public ApplicationResponse findApplication(ParameterMap parameters) throws ServerError;
+    public Response<Application>  findApplication(ParameterMap parameters) throws ServerError;
 
     /**
      * Reads a {@link Service} in to the {@link ServiceResponse} by service id
      *
      * @param serviceId - required id of the service
-     * @return {@link ServiceResponse}
+     * @return {@link Response}
      * @throws ServerError
      */
-    public ServiceResponse readService(String serviceId) throws ServerError;
+    public Response<Service> readService(String serviceId) throws ServerError;
 
     /**
      * Updates an existing {@link Service} and returns it in {@link ServiceResponse} by service id
      *
      * @param serviceId - required id of the service
-     * @return {@link ServiceResponse}
+     * @return {@link Response}
      * @throws ServerError
      */
-	public ServiceResponse updateService(String serviceId, ParameterMap parameterMap) throws ServerError;
+	public Response<Service> updateService(String serviceId, ParameterMap parameterMap) throws ServerError;
 
 	/**
      * Delete an existing {@link ApplicationPlan} and returns it in {@link ApplicationPlanResponse}
@@ -62,10 +61,10 @@ public interface AccountApi {
      *
      * @param serviceId - required id of the service
      * @param applicationPlanId - required id of the application plan
-     * @return {@link ApplicationPlanResponse}
+     * @return {@link Response}
      * @throws ServerError
      */
-	public ApplicationPlanResponse deleteApplicationPlan(String serviceId, String applicationPlanId) throws ServerError;
+	public Response<ApplicationPlan> deleteApplicationPlan(String serviceId, String applicationPlanId) throws ServerError;
 
     /**
      * Reads a {@link ApplicationPlan} in to the {@link ApplicationPlanResponse}
@@ -73,8 +72,8 @@ public interface AccountApi {
      *
      * @param serviceId - required id of the service
      * @param applicationPlanId - required id of the application plan
-     * @return {@link ApplicationPlanResponse}
+     * @return {@link Response}
      * @throws ServerError
      */
-	public ApplicationPlanResponse readApplicationPlan(String serviceId, String applicationPlanId) throws ServerError;
+	public Response<ApplicationPlan> readApplicationPlan(String serviceId, String applicationPlanId) throws ServerError;
 }

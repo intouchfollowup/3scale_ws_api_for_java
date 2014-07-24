@@ -7,7 +7,8 @@ import org.junit.Test;
 
 import threescale.v3.api.HttpResponse;
 import threescale.v3.api.ServerError;
-import threescale.v3.api.http.response.ApplicationResponse;
+import threescale.v3.api.http.response.Response;
+import threescale.v3.xml.elements.application.Application;
 
 
 /**
@@ -22,7 +23,7 @@ public class ErrorsTest {
 	public void testUnmarshallingOfErrors() throws ServerError {
 		// using ApplicationResponse as a test object
 		HttpResponse httpResponse  = new HttpResponse(400, xmlWith1Error);
-		ApplicationResponse response = new ApplicationResponse(httpResponse);
+		Response<Application> response = new Response<Application>(httpResponse, Application.class);
 
 		assertThat(response.getStatus(), equalTo(400));
 		assertThat(response.hasErrors(), equalTo(true));
@@ -30,7 +31,7 @@ public class ErrorsTest {
 		assertThat(response.getErrors().get(0).getMessage(), equalTo("error1"));
 
 		httpResponse  = new HttpResponse(400, xmlWith2Errors);
-		response = new ApplicationResponse(httpResponse);
+		response = new Response<Application>(httpResponse, Application.class);
 
 		assertThat(response.getStatus(), equalTo(400));
 		assertThat(response.hasErrors(), equalTo(true));
@@ -39,14 +40,14 @@ public class ErrorsTest {
 		assertThat(response.getErrors().get(1).getMessage(), equalTo("error2"));
 
 		httpResponse  = new HttpResponse(400, xmlWithNoError);
-		response = new ApplicationResponse(httpResponse);
+		response = new Response<Application>(httpResponse, Application.class);
 
 		assertThat(response.getStatus(), equalTo(400));
 		assertThat(response.hasErrors(), equalTo(false));
 		assertThat(response.getErrors().size(), equalTo(0));
 
 		httpResponse  = new HttpResponse(400, errorXml);
-		response = new ApplicationResponse(httpResponse);
+		response = new Response<Application>(httpResponse, Application.class);
 
 		assertThat(response.getStatus(), equalTo(400));
 		assertThat(response.hasErrors(), equalTo(true));
@@ -54,14 +55,14 @@ public class ErrorsTest {
 		assertThat(response.getErrors().get(0).getMessage(), equalTo("error1"));
 
 		httpResponse  = new HttpResponse(401, "");
-		response = new ApplicationResponse(httpResponse);
+		response = new Response<Application>(httpResponse, Application.class);
 
 		assertThat(response.getStatus(), equalTo(401));
 		assertThat(response.hasErrors(), equalTo(false));
 		assertThat(response.getErrors().size(), equalTo(0));
 
 		httpResponse  = new HttpResponse(401, null);
-		response = new ApplicationResponse(httpResponse);
+		response = new Response<Application>(httpResponse, Application.class);
 
 		assertThat(response.getStatus(), equalTo(401));
 		assertThat(response.hasErrors(), equalTo(false));
