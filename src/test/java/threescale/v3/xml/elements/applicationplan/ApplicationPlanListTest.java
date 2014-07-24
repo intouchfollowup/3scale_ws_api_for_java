@@ -7,7 +7,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static threescale.v3.xml.elements.applicationplan.ApplicationPlanTest.APPLICATON_PLAN_ID;
 import static threescale.v3.xml.elements.applicationplan.ApplicationPlanTest.APPLICATON_PLAN_STATE;
-import static threescale.v3.xml.elements.applicationplan.ApplicationPlanTest.NAME;
+import static threescale.v3.xml.elements.applicationplan.ApplicationPlanTest.APPLICATION_PLAN_NAME;
 import static threescale.v3.xml.elements.service.ServiceTest.SERVICE_ID;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class ApplicationPlanListTest {
 
 			assertThat(applicationPlan.getId(), equalTo(APPLICATON_PLAN_ID));
 			assertThat(applicationPlan.getServiceId(), equalTo(SERVICE_ID));
-			assertThat(applicationPlan.getName(), equalTo(NAME));
+			assertThat(applicationPlan.getName(), equalTo(APPLICATION_PLAN_NAME));
 			assertThat(applicationPlan.getState(), equalTo(APPLICATON_PLAN_STATE));
 			assertThat(applicationPlan.getEndUserRequired(), equalTo(false));
 		} catch (JAXBException e) {
@@ -43,7 +43,7 @@ public class ApplicationPlanListTest {
 				+ "<plans>"
 				+ "<plan custom=\"false\" default=\"false\">"
 				+ "  <id>" + APPLICATON_PLAN_ID +"</id>"
-				+ "  <name>" + NAME + "</name>"
+				+ "  <name>" + APPLICATION_PLAN_NAME + "</name>"
 				+ "  <type>application_plan</type>"
 				+ "  <state>" + APPLICATON_PLAN_STATE + "</state>"
 				+ "  <service_id>" + SERVICE_ID +"</service_id>"

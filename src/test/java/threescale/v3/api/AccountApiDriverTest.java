@@ -3,6 +3,7 @@ package threescale.v3.api;
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
+import static threescale.v3.api.AccountApiConstants.APPLICATION_PLAN_CREATE_URL;
 import static threescale.v3.api.AccountApiConstants.APPLICATION_PLAN_DELETE_URL;
 import static threescale.v3.api.AccountApiConstants.APPLICATION_PLAN_LIST_URL;
 import static threescale.v3.api.AccountApiConstants.APPLICATION_PLAN_READ_URL;
@@ -13,7 +14,9 @@ import static threescale.v3.api.AccountApiConstants.SERVICES_UPDATE_URL;
 import static threescale.v3.api.ParameterConstants.PROVIDER_KEY_PARAMETER;
 import static threescale.v3.xml.elements.applicationplan.ApplicationPlanListTest.APPLCATION_PLANS_XML;
 import static threescale.v3.xml.elements.applicationplan.ApplicationPlanTest.APPLCATION_PLAN_XML;
+import static threescale.v3.xml.elements.applicationplan.ApplicationPlanTest.APPLICATION_PLAN_NAME;
 import static threescale.v3.xml.elements.applicationplan.ApplicationPlanTest.APPLICATON_PLAN_ID;
+import static threescale.v3.xml.elements.applicationplan.ApplicationPlanTest.APPLICATON_PLAN_STATE;
 import static threescale.v3.xml.elements.service.ServiceTest.SERVICE_ID;
 import static threescale.v3.xml.elements.service.ServiceTest.SERVICE_XML;
 
@@ -88,6 +91,26 @@ public class AccountApiDriverTest {
 
 		assertThat(service.getId(), equalTo(SERVICE_ID));
 		assertThat(service.getName(), equalTo("Test New Api Name"));
+    }
+
+    @Test
+    public void testCrudAppliationPlan() throws ServerError {
+    	ApplicationPlan applicationPlan = new ApplicationPlan();
+    	applicationPlan.setServiceId(SERVICE_ID);
+    	applicationPlan.setName(APPLICATION_PLAN_NAME);
+    	applicationPlan.setState(APPLICATON_PLAN_STATE);
+    	String url = buildMockUrl(format(APPLICATION_PLAN_CREATE_URL, SERVICE_ID));
+
+    	mockHtmlServerPost(url, applicationPlan.toParameterMap(), 201, APPLCATION_PLAN_XML);
+
+    	Response<ApplicationPlan> response = accountApi.createApplicationPlan(applicationPlan);
+
+    	assertThat(response.isSuccess(), equalTo(true));
+
+    	ApplicationPlan applicationPlanCreated = response.getBody();
+    	assertThat(applicationPlanCreated.getServiceId(), equalTo(applicationPlan.getServiceId()));
+    	assertThat(applicationPlanCreated.getName(), equalTo(applicationPlan.getName()));
+		assertThat(applicationPlanCreated.getState(), equalTo(applicationPlan.getState()));
     }
 
     @Test
@@ -169,6 +192,16 @@ public class AccountApiDriverTest {
     	final ParameterEncoder mockParameterEncoder = new ParameterEncoder();
     	context.checking(new Expectations() {{
     		oneOf(htmlServer).put(url, mockParameterEncoder.encode(parameterMap));
+    		will(returnValue(new HttpResponse(httpSatus, httpBody)));
+    	}});
+    }
+
+    private void mockHtmlServerPost(final String url, final ParameterMap parameterMap ,final int httpSatus, final String httpBody) throws ServerError {
+    	parameterMap.add(PROVIDER_KEY_PARAMETER, provider_key);
+
+    	final ParameterEncoder mockParameterEncoder = new ParameterEncoder();
+    	context.checking(new Expectations() {{
+    		oneOf(htmlServer).post(url, mockParameterEncoder.encode(parameterMap));
     		will(returnValue(new HttpResponse(httpSatus, httpBody)));
     	}});
     }

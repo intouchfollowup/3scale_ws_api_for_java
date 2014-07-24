@@ -1,8 +1,10 @@
 package threescale.v3.api.impl;
 
 import static java.lang.String.format;
+import static org.apache.commons.lang3.Validate.notBlank;
 import static org.apache.commons.lang3.Validate.notNull;
 import static threescale.v3.api.AccountApiConstants.APPLICATIONS_FIND_URL;
+import static threescale.v3.api.AccountApiConstants.APPLICATION_PLAN_CREATE_URL;
 import static threescale.v3.api.AccountApiConstants.APPLICATION_PLAN_DELETE_URL;
 import static threescale.v3.api.AccountApiConstants.APPLICATION_PLAN_READ_URL;
 import static threescale.v3.api.AccountApiConstants.SERVICES_READ_URL;
@@ -31,6 +33,8 @@ public class AccountApiDriver extends ApiDriver implements AccountApi{
 
 	private final String SERVICE_ID_REQUIRED_MESSAGE = "Service Id is required";
 	private final String APPLICATION_ID_REQUIRED_MESSAGE = "Application Id is required";
+	private final String APPLICATION_PLAN_REQUIRED_MESSAGE = "ApplicationPlan is required";
+	private final String APPLICATION_PLAN_NAME_REQUIRED_MESSAGE = "ApplicationPlan is required";
 
 	public AccountApiDriver(String providerKey, String host, boolean useHttps) {
 		super(providerKey, host, useHttps);
@@ -67,6 +71,17 @@ public class AccountApiDriver extends ApiDriver implements AccountApi{
 	}
 
 	@Override
+	public Response<ApplicationPlan> createApplicationPlan(ApplicationPlan applicationPlan) throws ServerError {
+		notNull(applicationPlan, APPLICATION_PLAN_REQUIRED_MESSAGE);
+		notBlank(applicationPlan.getServiceId(), SERVICE_ID_REQUIRED_MESSAGE);
+		notBlank(applicationPlan.getName(), APPLICATION_PLAN_NAME_REQUIRED_MESSAGE);
+
+		ParameterMap parameterMap = applicationPlan.toParameterMap();
+		HttpResponse httpResponse = post(format(APPLICATION_PLAN_CREATE_URL, applicationPlan.getServiceId()), parameterMap);
+		return createResponse(httpResponse, ApplicationPlan.class);
+	}
+
+	@Override
 	public Response<ApplicationPlan> readApplicationPlan(String serviceId, String applicationPlanId) throws ServerError {
 		notNull(serviceId, SERVICE_ID_REQUIRED_MESSAGE);
 		notNull(applicationPlanId, APPLICATION_ID_REQUIRED_MESSAGE);
@@ -95,5 +110,4 @@ public class AccountApiDriver extends ApiDriver implements AccountApi{
 	private <T> Response<T> createResponse(HttpResponse httpResponse, Class<T> clazz) throws ServerError {
 		return new Response<T>(httpResponse, clazz);
 	}
-
 }

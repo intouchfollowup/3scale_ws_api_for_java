@@ -16,7 +16,7 @@ public class ApplicationPlanTest {
 
 	public static String APPLICATON_PLAN_ID = "5555555555555";
 	public static String APPLICATON_PLAN_STATE = "hidden";
-	public static String NAME = "Test Plan";
+	public static String APPLICATION_PLAN_NAME = "Test Plan";
 
 	@Test
 	public void testApplicationUnmarshal() {
@@ -25,7 +25,7 @@ public class ApplicationPlanTest {
 
 			assertThat(applicationPlan.getId(), equalTo(APPLICATON_PLAN_ID));
 			assertThat(applicationPlan.getServiceId(), equalTo(SERVICE_ID));
-			assertThat(applicationPlan.getName(), equalTo(NAME));
+			assertThat(applicationPlan.getName(), equalTo(APPLICATION_PLAN_NAME));
 			assertThat(applicationPlan.getState(), equalTo(APPLICATON_PLAN_STATE));
 			assertThat(applicationPlan.getEndUserRequired(), equalTo(false));
 		} catch (JAXBException e) {
@@ -36,7 +36,7 @@ public class ApplicationPlanTest {
 	public static String APPLCATION_PLAN_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 				+ "<plan custom=\"false\" default=\"false\">"
 				+ "  <id>" + APPLICATON_PLAN_ID +"</id>"
-				+ "  <name>" + NAME + "</name>"
+				+ "  <name>" + APPLICATION_PLAN_NAME + "</name>"
 				+ "  <type>application_plan</type>"
 				+ "  <state>" + APPLICATON_PLAN_STATE + "</state>"
 				+ "  <service_id>" + SERVICE_ID +"</service_id>"

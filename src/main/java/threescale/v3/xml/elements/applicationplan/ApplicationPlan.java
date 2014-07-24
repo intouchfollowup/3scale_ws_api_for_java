@@ -3,10 +3,11 @@ package threescale.v3.xml.elements.applicationplan;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import threescale.v3.api.ParameterMap;
 import threescale.v3.xml.elements.Element;
 
 @XmlRootElement(name = "plan")
-public class ApplicationPlan extends Element{
+public class ApplicationPlan extends Element {
 	private String name;
 	private String type;
 	private String state;
@@ -93,5 +94,18 @@ public class ApplicationPlan extends Element{
 
 	public void setCancellationPeriod(String cancellationPeriod) {
 		this.cancellationPeriod = cancellationPeriod;
+	}
+
+	public ParameterMap toParameterMap() {
+		ParameterMap parameterMap = new ParameterMap();
+		parameterMap.addIfNotBlank("name", name);
+		parameterMap.addIfNotBlank("type", type);
+		parameterMap.addIfNotBlank("state", state);
+		parameterMap.addIfNotNull("end_user_required", endUserRequired);
+		parameterMap.addIfNotNull("setup_fee", setupFee);
+		parameterMap.addIfNotNull("cost_per_month", costPerMonth);
+		parameterMap.addIfNotBlank("trial_period_days", trialPeriodDays);
+		parameterMap.addIfNotBlank("cancellation_period", cancellationPeriod);
+		return parameterMap;
 	}
 }

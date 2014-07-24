@@ -57,6 +57,15 @@ public interface AccountApi {
      */
 	public Response<Service> updateService(String serviceId, ParameterMap parameterMap) throws ServerError;
 
+	/**
+     * Creates a {@link ApplicationPlan} and returns the created on in to the {@link Response}
+     *
+     * @param applicationPlan - required {@link ApplicationPlan}
+     * @return {@link Response}
+     * @throws ServerError
+     */
+	public Response<ApplicationPlan> createApplicationPlan(ApplicationPlan applicationPlan) throws ServerError;
+
     /**
      * Reads a {@link ApplicationPlan} in to the {@link Response}
      * by service id and application plan id
@@ -88,5 +97,6 @@ public interface AccountApi {
      * @throws ServerError
      */
 	public Response<ApplicationPlan> deleteApplicationPlan(String serviceId, String applicationPlanId) throws ServerError;
+
 
 }

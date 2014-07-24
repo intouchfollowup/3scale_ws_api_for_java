@@ -1,5 +1,8 @@
 package threescale.v3.api;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static threescale.v3.utils.ObjectUtils.isNotNull;
+
 import java.util.HashMap;
 import java.util.Set;
 
@@ -73,6 +76,30 @@ public class ParameterMap {
      */
     public void add(String key, ParameterMap[] array) {
         data.put(key, array);
+    }
+
+    /**
+     * Add a string value if value is not blank
+     *
+     * @param key
+     * @param value
+     */
+    public void addIfNotBlank(String key, String value) {
+    	if(isNotBlank(value)) {
+    		add(key, value);
+    	}
+    }
+
+    /**
+     * Add a string value if Object is not null and the Object toString() is not blank
+     *
+     * @param key
+     * @param value
+     */
+    public void addIfNotNull(String key, Object object) {
+    	if(isNotNull(object)) {
+    		addIfNotBlank(key, object.toString());
+    	}
     }
 
     /**
