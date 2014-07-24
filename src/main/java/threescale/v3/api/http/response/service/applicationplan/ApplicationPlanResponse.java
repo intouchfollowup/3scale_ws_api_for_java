@@ -18,6 +18,7 @@ public class ApplicationPlanResponse extends AbstractResponse<ApplicationPlan>{
 
 	@Override
 	protected boolean isSuccessResponse() {
-		return getStatus() == 201;
+		int status = getStatus();
+		return (status == 201 || status == 200);
 	}
 }
