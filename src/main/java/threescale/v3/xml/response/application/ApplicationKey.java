@@ -1,4 +1,4 @@
-package threescale.v3.xml.response;
+package threescale.v3.xml.response.application;
 
 public class ApplicationKey {
 	private String key;

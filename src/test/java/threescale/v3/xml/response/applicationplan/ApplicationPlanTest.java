@@ -1,9 +1,9 @@
-package threescale.v3.xml.response;
+package threescale.v3.xml.response.applicationplan;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-import static threescale.v3.xml.bind.response.service.ServiceTest.SERVICE_ID;
+import static threescale.v3.xml.response.service.ServiceTest.SERVICE_ID;
 
 import javax.xml.bind.JAXBException;
 

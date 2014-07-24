@@ -6,7 +6,7 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-import threescale.v3.xml.response.Application;
+import threescale.v3.xml.response.application.Application;
 import threescale.v3.xml.webhook.EventObject;
 
 

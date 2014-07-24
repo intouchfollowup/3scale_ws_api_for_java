@@ -3,7 +3,7 @@ package threescale.v3.api.http.response.service.applicationplan;
 import threescale.v3.api.HttpResponse;
 import threescale.v3.api.ServerError;
 import threescale.v3.api.http.response.AbstractResponse;
-import threescale.v3.xml.response.ApplicationPlan;
+import threescale.v3.xml.response.applicationplan.ApplicationPlan;
 
 /**
  *

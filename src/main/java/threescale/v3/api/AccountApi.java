@@ -4,7 +4,7 @@ import threescale.v3.api.http.response.AccountResponse;
 import threescale.v3.api.http.response.ApplicationResponse;
 import threescale.v3.api.http.response.service.ServiceResponse;
 import threescale.v3.api.http.response.service.applicationplan.ApplicationPlanResponse;
-import threescale.v3.xml.response.ApplicationPlan;
+import threescale.v3.xml.response.applicationplan.ApplicationPlan;
 import threescale.v3.xml.response.service.Service;
 
 /**

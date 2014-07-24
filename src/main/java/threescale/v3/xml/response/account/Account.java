@@ -1,9 +1,12 @@
-package threescale.v3.xml.response;
+package threescale.v3.xml.response.account;
 
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import threescale.v3.xml.response.Response;
+import threescale.v3.xml.response.application.Application;
 
 /**
  *

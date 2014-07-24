@@ -1,4 +1,4 @@
-package threescale.v3.xml.response;
+package threescale.v3.xml.response.application;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -10,6 +10,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import threescale.v3.xml.adapters.ElementMapAdapter;
+import threescale.v3.xml.response.Response;
+import threescale.v3.xml.response.applicationplan.ApplicationPlan;
 
 @XmlRootElement(name = "application")
 public class Application extends Response {

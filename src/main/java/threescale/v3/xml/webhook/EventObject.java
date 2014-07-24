@@ -2,7 +2,7 @@ package threescale.v3.xml.webhook;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import threescale.v3.xml.response.Application;
+import threescale.v3.xml.response.application.Application;
 
 @XmlRootElement(name = "object")
 public class EventObject {

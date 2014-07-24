@@ -1,4 +1,4 @@
-package threescale.v3.xml.bind.response.service;
+package threescale.v3.xml.response.service;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;

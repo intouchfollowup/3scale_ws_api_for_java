@@ -2,7 +2,7 @@ package threescale.v3.api.http.response;
 
 import threescale.v3.api.HttpResponse;
 import threescale.v3.api.ServerError;
-import threescale.v3.xml.response.Account;
+import threescale.v3.xml.response.account.Account;
 
 public class AccountResponse extends AbstractResponse<Account> {
 
