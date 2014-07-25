@@ -1,6 +1,13 @@
 package threescale.v3.api;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static threescale.v3.api.ParameterConstants.APPLICATION_ID_PARAMETER;
+import static threescale.v3.api.ParameterConstants.APP_ID_PARAMETER;
+import static threescale.v3.api.ParameterConstants.HITS_PARAMETER;
+import static threescale.v3.api.ParameterConstants.PROVIDER_KEY_PARAMETER;
+import static threescale.v3.api.ParameterConstants.SERVICE_ID_PARAMETER;
+import static threescale.v3.api.ParameterConstants.TRANSACTIONS_ID_PARAMETER;
+import static threescale.v3.api.ParameterConstants.USAGE_PARAMETER;
 import static threescale.v3.utils.ObjectUtils.isNotNull;
 
 import java.util.HashMap;
@@ -168,5 +175,106 @@ public class ParameterMap {
      */
     public int size() {
         return data.size();
+    }
+
+    /**
+     * Returns a String, with a format  "Key(Value)" separated by comma's
+     *
+     * @return {@link String}
+     */
+    public String dataToString() {
+    	StringBuilder sb = new StringBuilder();
+
+    	Set<String> keySet = data.keySet();
+    	int i = 0;
+    	for (String key : keySet) {
+    		sb.append(key);
+    		sb.append("(");
+    		sb.append(data.get(key));
+    		sb.append(")");
+
+    		// add a nice comma separated version of it
+			if (i < (keySet.size() - 1)) {
+				sb.append(", ");
+			}
+			i++;
+		}
+
+    	return sb.toString();
+    }
+
+    public static class ParameterMapBuilder {
+
+		private ParameterMap tempParameterMap = new ParameterMap();
+
+		public ParameterMapBuilder add(String key, String value) {
+			tempParameterMap.addIfNotBlank(PROVIDER_KEY_PARAMETER, value);
+			return this;
+		}
+
+		public ParameterMapBuilder add(String key, ParameterMap map) {
+			tempParameterMap.add(key, map);
+			return this;
+		}
+
+		public ParameterMapBuilder add(String key, ParameterMap[] array) {
+			tempParameterMap.add(key, array);
+			return this;
+		}
+
+		public ParameterMapBuilder addIfNotBlank(String key, String value) {
+			tempParameterMap.addIfNotBlank(key, value);
+			return this;
+		}
+
+		public ParameterMapBuilder addIfNotNull(String key, Object object) {
+			tempParameterMap.addIfNotNull(key, object);
+			return this;
+		}
+
+		public ParameterMapBuilder addProviderKey(String value) {
+			tempParameterMap.addIfNotBlank(PROVIDER_KEY_PARAMETER, value);
+			return this;
+		}
+
+		public ParameterMapBuilder addApplicationId(String value) {
+			tempParameterMap.addIfNotBlank(APPLICATION_ID_PARAMETER, value);
+			return this;
+		}
+
+		public ParameterMapBuilder addAppId(String value) {
+			tempParameterMap.addIfNotBlank(APP_ID_PARAMETER, value);
+			return this;
+		}
+
+		public ParameterMapBuilder addServiceId(String value) {
+			tempParameterMap.addIfNotBlank(SERVICE_ID_PARAMETER, value);
+			return this;
+		}
+
+		public ParameterMapBuilder addTransactions(String value) {
+			tempParameterMap.addIfNotBlank(TRANSACTIONS_ID_PARAMETER, value);
+			return this;
+		}
+
+		public ParameterMapBuilder addUsage(String value) {
+			tempParameterMap.addIfNotBlank(USAGE_PARAMETER, value);
+			return this;
+		}
+
+		public ParameterMapBuilder addHits(String value) {
+			tempParameterMap.addIfNotBlank(HITS_PARAMETER, value);
+			return this;
+		}
+
+		public ParameterMap build() {
+			// return a new version
+			ParameterMap parameterMap = new ParameterMap();
+			parameterMap.data = tempParameterMap.data;
+
+			// reset it this for new usage
+			tempParameterMap = new ParameterMap();
+			return parameterMap;
+		}
     }
 }
