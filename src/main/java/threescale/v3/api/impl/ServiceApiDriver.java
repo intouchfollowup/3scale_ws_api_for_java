@@ -1,8 +1,6 @@
 package threescale.v3.api.impl;
 
 import static threescale.v3.api.ParameterConstants.HITS_PARAMETER;
-import static threescale.v3.api.ParameterConstants.SERVICE_ID_PARAMETER;
-import static threescale.v3.api.ParameterConstants.TRANSACTIONS_ID_PARAMETER;
 import static threescale.v3.api.ParameterConstants.USAGE_PARAMETER;
 import static threescale.v3.api.ServiceApiConstants.TRANSACTIONS_AUTHORIZE_URL;
 import static threescale.v3.api.ServiceApiConstants.TRANSACTIONS_AUTHREP_URL;
@@ -13,6 +11,7 @@ import static threescale.v3.utils.ObjectUtils.isNull;
 import threescale.v3.api.AuthorizeResponse;
 import threescale.v3.api.HttpResponse;
 import threescale.v3.api.ParameterMap;
+import threescale.v3.api.ParameterMap.ParameterMapBuilder;
 import threescale.v3.api.ReportResponse;
 import threescale.v3.api.ServerAccessor;
 import threescale.v3.api.ServerError;
@@ -66,14 +65,14 @@ public class ServiceApiDriver extends ApiDriver implements ServiceApi {
 			throw new IllegalArgumentException("No transactions provided");
 		}
 
-		ParameterMap parameterMap = new ParameterMap();
+		ParameterMapBuilder builder = new ParameterMapBuilder();
 		if (isNotNull(service_id)) {
-			parameterMap.add(SERVICE_ID_PARAMETER, service_id);
+			builder.addServiceId(service_id);
 		}
 
-		parameterMap.add(TRANSACTIONS_ID_PARAMETER, transactions);
+		builder.addTransactions(transactions);
 
-		return new ReportResponse(post(TRANSACTIONS_URL, parameterMap));
+		return new ReportResponse(post(TRANSACTIONS_URL, builder.build()));
 	}
 
 	@Override

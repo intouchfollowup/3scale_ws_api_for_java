@@ -10,6 +10,8 @@ import static threescale.v3.api.ParameterConstants.TRANSACTIONS_ID_PARAMETER;
 import static threescale.v3.api.ParameterConstants.USAGE_PARAMETER;
 import static threescale.v3.utils.ObjectUtils.isNotNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -252,13 +254,36 @@ public class ParameterMap {
 			return this;
 		}
 
-		public ParameterMapBuilder addTransactions(String value) {
-			tempParameterMap.addIfNotBlank(TRANSACTIONS_ID_PARAMETER, value);
+		public ParameterMapBuilder addTransactions(ParameterMap... transactions) {
+			tempParameterMap.add(TRANSACTIONS_ID_PARAMETER, transactions);
 			return this;
 		}
 
-		public ParameterMapBuilder addUsage(String value) {
-			tempParameterMap.addIfNotBlank(USAGE_PARAMETER, value);
+		public ParameterMapBuilder addTransaction(String appId, String hits) {
+
+			ParameterMap[] transactions = tempParameterMap.getArrayValue(TRANSACTIONS_ID_PARAMETER);
+			if(isNotNull(transactions) && transactions.length > 0) {
+				// transactions parameter existed, append this as another transaction
+				ArrayList<ParameterMap> list = new ArrayList<ParameterMap>(Arrays.asList(transactions));
+
+				ParameterMap usage = new ParameterMap();
+				usage.add(HITS_PARAMETER, hits);
+
+				ParameterMap transaction = new ParameterMap();
+				transaction.add(APP_ID_PARAMETER, appId);
+				transaction.add(USAGE_PARAMETER, usage);
+
+				list.add(transaction);
+				addTransactions(list.toArray(new ParameterMap[list.size()]));
+			} else {
+				// no transactions parameter existed, we are just a root map holding a transaction
+				ParameterMap usage = new ParameterMap();
+				usage.add(HITS_PARAMETER, hits);
+
+				tempParameterMap.add(APP_ID_PARAMETER, appId);
+				tempParameterMap.add(USAGE_PARAMETER, usage);
+			}
+
 			return this;
 		}
 
