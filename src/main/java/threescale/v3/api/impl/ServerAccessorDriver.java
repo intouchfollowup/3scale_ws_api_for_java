@@ -91,6 +91,7 @@ public class ServerAccessorDriver implements ServerAccessor {
             connection.setRequestMethod(requestMethod);
             connection.setDoOutput(true);
             connection.setReadTimeout(10000);
+            connection.setConnectTimeout(30000);
             connection.setRequestProperty("Accept", "*/*");
             connection.setRequestProperty("Accept-Charset", "UTF-8");
             connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
